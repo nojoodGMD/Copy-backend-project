@@ -12,7 +12,7 @@ import {
 
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    //the service for get all the product
+    //the service for get all the category
     const category = await getCategory()
     res.send({
       message: 'all category are returned',
@@ -45,7 +45,7 @@ export const createCategory = async (req: Request, res: Response, next: NextFunc
 export const deleteSingleCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-    //service for delete single product
+    //service for delete single category
     await deleteCategory(slug)
     res.json({
       message: 'single category is dleted',
