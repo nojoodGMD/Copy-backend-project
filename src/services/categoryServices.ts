@@ -1,5 +1,5 @@
-import slugify from 'slugify'
 import { Request } from 'express'
+import slugify from 'slugify'
 
 import { ICategory, categoryModel } from '../models/categorySchema'
 import { createHttpError } from '../errors/createError'
