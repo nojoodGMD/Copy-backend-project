@@ -26,6 +26,7 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body
+    //services
     await createSingleCategory(name)
     const category = new categoryModel({
       name,
