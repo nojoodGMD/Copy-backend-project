@@ -8,7 +8,7 @@ import {
 } from '../controllers/categoryController'
 
 const router = Router()
-//GE->/api/categories->for get all the category
+//GET->/api/categories->for get all the category
 router.get('/', getAllCategory)
 //GET->/api/categories/slug->for get single category
 router.get('/:slug', getSingleCategory)
@@ -16,6 +16,6 @@ router.get('/:slug', getSingleCategory)
 router.post('/', createCategory)
 //DELETE ->/api/categories/slug->to delete category
 router.delete('/:slug', deleteSingleCategory)
-//PUT ->/api/categories/slug->to update the single product
+//PUT ->/api/categories/slug->to update the single category
 router.put('/:slug', updateCategory)
 export default router

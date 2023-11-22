@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import slugify from 'slugify'
 
-import { categoryModel } from '../models/categorySchema'
 import {
   createSingleCategory,
   deleteCategory,
@@ -26,13 +24,7 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body
-    //services
-    await createSingleCategory(name)
-    const category = new categoryModel({
-      name,
-      slug: slugify(name),
-    })
-    await category.save()
+    const category = await createSingleCategory(name)
     res.status(201).json({
       message: 'single category created.',
       payload: category,
