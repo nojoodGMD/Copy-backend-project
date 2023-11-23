@@ -61,3 +61,6 @@ Method: GET, Path: /api/products, Date: 11/23/2023, Time: 2:03:03 PM
 Method: GET, Path: /, Date: 11/23/2023, Time: 2:04:38 PM
 Method: GET, Path: /, Date: 11/23/2023, Time: 2:04:39 PM
 Method: GET, Path: /api/products, Date: 11/23/2023, Time: 2:04:42 PM
+Method: GET, Path: /, Date: 11/23/2023, Time: 2:07:19 PM
+Method: GET, Path: /, Date: 11/23/2023, Time: 2:07:21 PM
+Method: GET, Path: /api/products, Date: 11/23/2023, Time: 2:07:24 PM
