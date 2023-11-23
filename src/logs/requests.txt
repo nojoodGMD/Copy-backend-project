@@ -99,3 +99,4 @@ Method: POST, Path: /api/categories, Date: 11/23/2023, Time: 11:42:38 AM
 Method: POST, Path: /api/products, Date: 11/23/2023, Time: 11:43:27 AM
 Method: POST, Path: /api/products, Date: 11/23/2023, Time: 11:43:35 AM
 Method: POST, Path: /api/products, Date: 11/23/2023, Time: 11:43:56 AM
+Method: GET, Path: /api/categories, Date: 11/23/2023, Time: 11:53:23 AM
