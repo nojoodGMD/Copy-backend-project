@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import User from '../../models/user'
+import User from '../../models/userSchema'
 import Order from '../../models/order'
 
 export const postOrder = async (req: Request, res: Response, next: NextFunction) => {
