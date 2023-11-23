@@ -2,7 +2,7 @@ import express, { Application } from 'express'
 import morgan from 'morgan'
 
 // import usersRouter from './routers/users'
-import productsRouter from './routers/products'
+import productsRouter from './routers/productsRoutes'
 import ordersRouter from './routers/orders'
 import categoriesRouter from './routers/categoryRoutes'
 import apiErrorHandler from './middlewares/errorHandler'
