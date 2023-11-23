@@ -1,7 +1,7 @@
 import express, { Application } from 'express'
 import morgan from 'morgan'
 
-// import usersRouter from './routers/users'
+import usersRouter from './routers/userRouter'
 import productsRouter from './routers/productsRoutes'
 import ordersRouter from './routers/orders'
 import categoriesRouter from './routers/categoryRoutes'
@@ -12,7 +12,6 @@ import { connectDB } from './config/db'
 
 
 const app: Application = express();
-// const PORT = 5050
 const PORT: number = dev.app.port;
 app.use(myLogger)
 app.use(express.urlencoded({ extended: true }))
@@ -20,7 +19,7 @@ app.use(express.json())
 app.use(morgan("dev"))
 
 
-// app.use('/api/users', usersRouter)
+app.use('/api/users', usersRouter)
 app.use('/api/orders', ordersRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/categories',categoriesRouter)

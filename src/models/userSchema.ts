@@ -1,7 +1,8 @@
 import {Schema, model, Document} from 'mongoose'
 import bcrypt from 'bcrypt'
-
+import { v4 as uuidv4 } from 'uuid'
 interface IUser extends Document {
+  id: string
   name: string;
   role: string;
   isBanned: boolean;
@@ -14,6 +15,10 @@ interface IUser extends Document {
 
 
 const userSchema = new Schema<IUser>({
+  id:{
+    type:String,
+    default: uuidv4()
+  },
   name: {
     type: String,
     required: [true,'Please enter the user name'],
