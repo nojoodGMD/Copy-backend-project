@@ -68,7 +68,7 @@ const userSchema = new Schema<IUser>({
   // relation between order and user should be many orders to one user
   order: [{
     type: Schema.Types.ObjectId,
-    ref: 'Order',
+    ref: 'Order' ,
   }],
 },
 {timestamps : true}
