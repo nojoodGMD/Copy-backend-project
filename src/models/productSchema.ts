@@ -20,19 +20,19 @@ const productSchema = new Schema({
 
   price: {
     type: Number,
-    required: true,
+    // required: true,
     trim: true,
   },
 
   quantity: {
     type: Number,
-    required: true,
+    // required: true,
     trim: true,
   },
 
   sold: {
     type: Number,
-    required: true,
+    // required: true,
     trim: true,
   },
 
@@ -43,7 +43,7 @@ const productSchema = new Schema({
 
   description: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
     minlength: [5, "product description must be at least 5 character long"],
   },

@@ -10,23 +10,23 @@ export const getAllProducts = async (
 ) => {
   try {
     //limit and page number
-    let page = Number (req.query.page )|| 1;
-    const limit = Number (req.query.limit )|| 3;
+    // let page = Number (req.query.page )|| 1;
+    // const limit = Number (req.query.limit )|| 3;
 
      //find how many produtcs there are 
-     const count = await Product.countDocuments();
-     const totalPage = Math.ceil(count / limit);
+    //  const count = await Product.countDocuments();
+    //  const totalPage = Math.ceil(count / limit);
 
-     if (page > totalPage) {
-     page = totalPage;
-     }
-     const skip = (page-1) * limit;
-     const products = await Product.find().skip(skip).limit(limit);
-
+    //  if (page > totalPage) {
+    //  page = totalPage;
+    //  }
+    //  const skip = (page-1) * limit;
+    //  const products = await Product.find().skip(skip).limit(limit);
+     const products = await Product.find()
     res.send({ message: "Get all product", payload: {
       products,
-      totalPage,
-      currentPage: page
+    //   totalPage,
+    //   currentPage: page
     } });
   } catch (error) {
     next(error);
