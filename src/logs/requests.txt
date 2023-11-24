@@ -248,3 +248,6 @@ Method: POST, Path: /api/categories, Date: 11/25/2023, Time: 1:04:53 AM
 Method: GET, Path: /api/categories, Date: 11/25/2023, Time: 1:05:06 AM
 Method: PUT, Path: /api/categories/disk-top, Date: 11/25/2023, Time: 1:05:21 AM
 Method: PUT, Path: /api/categories/disk-top, Date: 11/25/2023, Time: 1:05:41 AM
+Method: PUT, Path: /api/categories/smart-phone, Date: 11/25/2023, Time: 1:16:32 AM
+Method: PUT, Path: /api/categories/smart-phone, Date: 11/25/2023, Time: 1:19:38 AM
+Method: PUT, Path: /api/categories/smart-phone, Date: 11/25/2023, Time: 1:19:52 AM

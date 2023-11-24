@@ -1,9 +1,5 @@
 import { check } from "express-validator";
 
-// export const categoryValidator = () => {
-//     return [check("id").isNumeric().withMessage("Product ID must be a number")];
-//   };
-  
   export const validateCreateCategory = [
     check("name")
       .trim()
