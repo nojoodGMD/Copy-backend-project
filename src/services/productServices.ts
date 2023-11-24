@@ -2,6 +2,8 @@
 // import { createHttpError } from '../errors/createError'
 // import { Product } from '../models/productSchema'
 
+import { Product } from "../models/productSchema";
+
 
 // //GET->get all the product
 // export const getProduct = async (page = 1, limit = 3) => {
@@ -47,3 +49,21 @@
 //   }
 //   return product
 // }
+//GET->get all the product services
+export const productService = async (page: number, limit: number) => {
+    const count = await Product.countDocuments();
+    const totalPage = Math.ceil(count / limit);
+
+    if (page > totalPage) {
+        page = totalPage;
+    }
+
+    const skip = (page - 1) * limit;
+    const products = await Product.find().skip(skip).limit(limit);
+
+    return {
+        products,
+        totalPage,
+        currentPage: page,
+    };
+};
