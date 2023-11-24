@@ -242,3 +242,9 @@ Method: GET, Path: /api/products, Date: 11/24/2023, Time: 11:49:32 PM
 Method: GET, Path: /api/products, Date: 11/24/2023, Time: 11:49:45 PM
 Method: GET, Path: /api/products, Date: 11/24/2023, Time: 11:50:41 PM
 Method: GET, Path: /api/products, Date: 11/24/2023, Time: 11:51:04 PM
+Method: PUT, Path: /api/categories, Date: 11/25/2023, Time: 1:03:54 AM
+Method: GET, Path: /api/categories, Date: 11/25/2023, Time: 1:03:58 AM
+Method: POST, Path: /api/categories, Date: 11/25/2023, Time: 1:04:53 AM
+Method: GET, Path: /api/categories, Date: 11/25/2023, Time: 1:05:06 AM
+Method: PUT, Path: /api/categories/disk-top, Date: 11/25/2023, Time: 1:05:21 AM
+Method: PUT, Path: /api/categories/disk-top, Date: 11/25/2023, Time: 1:05:41 AM
