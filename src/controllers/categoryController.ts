@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import slugify from 'slugify'
 
-import { categoryModel } from '../models/categorySchema'
 import {
   createSingleCategory,
   deleteCategory,
@@ -12,7 +10,7 @@ import {
 
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    //the service for get all the product
+    //the service for get all the category
     const category = await getCategory()
     res.send({
       message: 'all category are returned',
@@ -26,12 +24,7 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body
-    await createSingleCategory(name)
-    const category = new categoryModel({
-      name,
-      slug: slugify(name),
-    })
-    await category.save()
+    const category = await createSingleCategory(name)
     res.status(201).json({
       message: 'single category created.',
       payload: category,
@@ -44,7 +37,7 @@ export const createCategory = async (req: Request, res: Response, next: NextFunc
 export const deleteSingleCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-    //service for delete single product
+    //service for delete single category
     await deleteCategory(slug)
     res.json({
       message: 'single category is dleted',

@@ -1,22 +1,23 @@
-import express from 'express'
-import mongoose from 'mongoose'
-import { config } from 'dotenv'
+import express, { Application } from 'express'
+import morgan from 'morgan'
 
-import usersRouter from './routers/users'
-import productsRouter from './routers/products'
+import usersRouter from './routers/userRouter'
+import productsRouter from './routers/productsRoutes'
 import ordersRouter from './routers/orders'
 import categoriesRouter from './routers/categoryRoutes'
 import apiErrorHandler from './middlewares/errorHandler'
 import myLogger from './middlewares/logger'
+import { dev } from './config/server'
+import { connectDB } from './config/db'
 
-config()
-const app = express()
-const PORT = 5050
-const URL = process.env.ATLAS_URL as string
 
+const app: Application = express();
+const PORT: number = dev.app.port;
 app.use(myLogger)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(morgan("dev"))
+
 
 app.use('/api/users', usersRouter)
 app.use('/api/orders', ordersRouter)
@@ -25,15 +26,8 @@ app.use('/api/categories',categoriesRouter)
 
 app.use(apiErrorHandler)
 
-mongoose
-  .connect(URL)
-  .then(() => {
-    console.log('Database connected')
-  })
-  .catch((err) => {
-    console.log('MongoDB connection error, ', err)
-  })
-
+ 
 app.listen(PORT, () => {
   console.log('Server running http://localhost:' + PORT)
+  connectDB();
 })
