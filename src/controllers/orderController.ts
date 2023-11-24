@@ -49,7 +49,6 @@ export const updateSingleOrder = async (req: Request, res: Response, next: NextF
 export const deleteSingleCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-    //service for delete single product
     await deleteOrder(slug)
     res.json({
       message: 'Delete order',
