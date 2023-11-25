@@ -1,5 +1,14 @@
 import { Router } from "express";
-import { createCategory, deleteSingleCategory, getAllCategory, getSingleCategory, updateCategory } from "../controllers/categoryController";
+
+import {
+  createCategory,
+  deleteSingleCategory,
+  getAllCategory,
+  getSingleCategory,
+  updateCategory,
+} from '../controllers/categoryController'
+import { validateCreateCategory, validateUpdateCategory } from '../validation/categoryVal'
+import { runValidation } from '../validation/runValidation'
 
 const router = Router()
 //GET->/api/categories->for get all the category
