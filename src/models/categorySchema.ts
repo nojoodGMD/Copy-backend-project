@@ -1,5 +1,10 @@
 import { Schema, model } from 'mongoose'
 
+export interface ICategory extends Document {
+  name: string
+  slug: string
+}
+
 export const categorySchema = new Schema(
   {
     name: {
