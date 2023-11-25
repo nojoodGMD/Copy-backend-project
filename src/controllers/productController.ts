@@ -1,8 +1,9 @@
 
 import slugify from 'slugify'
 import { Request, Response, NextFunction } from 'express'
+
 import { Product } from '../models/productSchema'
-import { productService } from './../services/productServices';
+import { productService } from '../services/productServices'
 
 //return all productes
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {

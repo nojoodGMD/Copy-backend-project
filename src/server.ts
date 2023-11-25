@@ -3,7 +3,7 @@ import morgan from 'morgan'
 
 import usersRouter from './routers/userRouter'
 import productsRouter from './routers/productsRoutes'
-// import ordersRouter from './routers/'
+import ordersRouter from './routers/ordersRouters'
 import categoriesRouter from './routers/categoryRoutes'
 import apiErrorHandler from './middlewares/errorHandler'
 import myLogger from './middlewares/logger'
