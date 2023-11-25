@@ -253,3 +253,7 @@ Method: PUT, Path: /api/categories/smart-phone, Date: 11/25/2023, Time: 1:19:38 
 Method: PUT, Path: /api/categories/smart-phone, Date: 11/25/2023, Time: 1:19:52 AM
 Method: GET, Path: /api/categories, Date: 11/25/2023, Time: 4:45:17 PM
 Method: GET, Path: /api/categories, Date: 11/25/2023, Time: 6:16:43 PM
+Method: GET, Path: /, Date: 11/25/2023, Time: 7:30:43 PM
+Method: GET, Path: /api/orders, Date: 11/25/2023, Time: 7:30:58 PM
+Method: POST, Path: /api/orders, Date: 11/25/2023, Time: 7:32:15 PM
+Method: PUT, Path: /api/orders/i, Date: 11/25/2023, Time: 7:32:55 PM
