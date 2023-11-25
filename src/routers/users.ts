@@ -1,8 +1,8 @@
 // import express from 'express'
 
-// import ApiError from '../errors/ApiError'
-// import User from '../models/user'
-// const router = express.Router()
+import ApiError from '../errors/ApiError'
+import User from '../models/user'
+const router = express.Router()
 
 // router.param('userId', (req, res, next, userId) => {
 //   const user = users.find((user) => user.id === userId)
