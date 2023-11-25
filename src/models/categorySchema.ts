@@ -8,6 +8,7 @@ const categorySchema = new Schema(
     name: {
       type: String,
       require: true,
+      
     },
     slug: {
       type: String,
