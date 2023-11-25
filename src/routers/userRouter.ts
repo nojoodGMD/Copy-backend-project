@@ -8,6 +8,13 @@ const router = Router();
 // GET: /users -> return all the users
 router.get('/',getAllUsers);
 
+// router.get('/', async (_, res) => {
+//     const users = await User.find().populate('order')
+//     res.json({
+//       users,
+//     })
+//   })
+
 // GET: /users:id -> return the user based on the id
 router.get('/:id',getUserById)
 
