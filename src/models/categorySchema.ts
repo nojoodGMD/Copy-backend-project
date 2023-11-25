@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Document, Schema, model } from 'mongoose'
 export interface ICategory extends Document {
   name: string
   slug: string
@@ -8,7 +8,7 @@ const categorySchema = new Schema(
     name: {
       type: String,
       require: true,
-      
+
     },
     slug: {
       type: String,
