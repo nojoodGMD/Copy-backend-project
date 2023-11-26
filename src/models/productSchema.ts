@@ -1,4 +1,17 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
+
+export interface IProduct extends Document {
+  name: string;
+  slug: string;
+  price: number;
+  image:string;
+  quantity: number;
+  sold: number;
+  shipping: number;
+  description: string;
+  createdAt?: string;
+  updatedAt?: string;
+  }
 
 const productSchema = new Schema({
   //name, price, description, quantitiy, shipping, sold, slug
@@ -36,6 +49,11 @@ const productSchema = new Schema({
     trim: true,
   },
 
+  image:{
+    type: String,
+    default: "public/products/products.jpeg",
+  },
+
   shipping: {
     type: Number,
     default: 0, // 0 -> free 
@@ -50,4 +68,4 @@ const productSchema = new Schema({
 }, {timestamps: true});
 
 //create the model/collections
-export const Product = model("Products", productSchema);
+export const Product = model<IProduct>("Products", productSchema);

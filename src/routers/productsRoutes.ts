@@ -8,6 +8,8 @@ import {
   getProductBySlug,
   updateProductBySlug,
 } from '../controllers/productController'
+import { createProductValidation, updateProductValidation } from '../validation/productVal';
+import { runValidation } from '../validation/runValidation';
 
 const router = Router();
 
@@ -18,12 +20,12 @@ router.get('/', getAllProducts)
 router.get('/:slug', getProductBySlug)
 
 //POST: /products -> create a new product
-router.post('/', createProduct)
+router.post('/',createProductValidation, runValidation ,createProduct)
 
 // Delete: /products/:slug -> delete a product
 router.delete('/:slug', deleteProductBySlug)
 
 // Update: /products/:slug -> Update a product by slug
-router.put('/:slug', updateProductBySlug)
+router.put('/:slug', updateProductValidation, runValidation, updateProductBySlug)
 
 export default router;
