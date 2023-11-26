@@ -3,16 +3,22 @@ import { Request } from 'express';
 
 import { IProduct, Product } from "../models/productSchema";
 import { createHttpError } from "../errors/createError";
+import ApiError from "../errors/ApiError";
+import apiErrorHandler from "../middlewares/errorHandler";
+import { Product } from "../models/productSchema";
+
 
 //GET->get all the product services
 export const productService = async (page: number, limit: number) => {
     const count = await Product.countDocuments();
-    const totalPage = Math.ceil(count / limit);
+    if(count <= 0){
+        throw new ApiError(404,'There are no products yet to show, please add products.')
+    }
 
+    const totalPage = Math.ceil(count / limit);
     if (page > totalPage) {
         page = totalPage;
     }
-
     const skip = (page - 1) * limit;
     const products = await Product.find().skip(skip).limit(limit);
 

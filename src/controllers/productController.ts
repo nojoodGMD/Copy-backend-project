@@ -10,7 +10,6 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
   try {
     let page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 3
-
     const result = await productService(page, limit)
 
     res.send({
@@ -48,6 +47,7 @@ export const getProductBySlug = async (
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
       const { name, price, quantity, description, sold, shipping } = req.body;
+
 
      const newItem =  await newProduct(name, price, quantity, description, sold, shipping);
 
