@@ -5,7 +5,7 @@ import { IProduct, Product } from "../models/productSchema";
 import { createHttpError } from "../errors/createError";
 import ApiError from "../errors/ApiError";
 import apiErrorHandler from "../middlewares/errorHandler";
-import { Product } from "../models/productSchema";
+
 
 
 //GET->get all the product services

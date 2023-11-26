@@ -1,7 +1,7 @@
 import {Schema, model, Document} from 'mongoose'
 import bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
-interface IUser extends Document {
+export interface IUser extends Document {
   id: string
   name: string;
   role: string;
