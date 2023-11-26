@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 import ApiError from "../errors/ApiError";
-import  User, {IUser} from '../models/userSchema';
+import  User from '../models/userSchema';
 
 //GET-> get all users
 export const getAllUsersService = async () => {
@@ -14,7 +14,7 @@ export const getSingleUserService = async (req: Request) => {
     const id = req.params.id;
     const users = await User.findOne({id:id});
     if (!users) {
-        const error = new ApiError(404, `order is not found with this slug: ${id}`)
+        const error = new ApiError(404, `User with this id does not exist.`)
         throw error
     }
     return users
@@ -53,13 +53,14 @@ export const deleteUserSevice = async (req : Request)=>{
     const user = await User.findOneAndDelete({id:id});
     if(!user){
       const error = new ApiError(404,"User with this id doesn't exist")
-      throw error;
+      throw error; 
     }
-}
+
+} 
 
 //update user
 export const updateUserService = async (req: Request)=>{
-    const id = req.params.id;
+    const id = req.params.id; 
     const newData = req.body;
     const user = await User.findOneAndUpdate({id:id},newData,{new:true});
     if(!user){

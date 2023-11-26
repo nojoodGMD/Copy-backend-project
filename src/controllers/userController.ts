@@ -29,7 +29,7 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const newUser = createUserService(req);
+    const newUser = await createUserService(req);
     res.status(201).json({
       message: 'user is registered successfully',
       payload : newUser,
@@ -41,10 +41,10 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = updateUserService(req);
+    const user = await updateUserService(req);
     res.status(200).json({
       message: 'users is updated successfully!',
-      payload: user
+      payload: user,
     })
   } catch (error) {
     next(error)
@@ -53,7 +53,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    deleteUserSevice(req);
+    await deleteUserSevice(req);
     res.status(200).json({
       message: 'users is deleted successfully!',
     })
