@@ -10,7 +10,6 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
   try {
     let page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 3
-
     const result = await productService(page, limit)
 
     res.send({
@@ -47,7 +46,6 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 
     // Check if a product with the same name already exists
     const productExist = await Product.exists({ name: name })
-    // console.log(productExist);
     if (productExist) {
       throw new Error('Product already exist with this slug!')
     }
