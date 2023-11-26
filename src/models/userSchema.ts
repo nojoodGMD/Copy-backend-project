@@ -63,12 +63,6 @@ const userSchema = new Schema<IUser>({
     trim: true,
     required: true,
     minlength: [10, 'Please enter a correct phone number length.'],
-    validate:{
-      validator: function(phoneNum: string){
-        return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(phoneNum);
-      },
-      message: 'Please enter a valid phone number'
-    }
   },
   // relation between order and user should be many orders to one user
   order: [{

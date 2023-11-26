@@ -31,7 +31,7 @@ export const isUserExistService = async ( req : Request)=>{
 
 //create a new user
 export const createUserService = async (req: Request)=>{
-    isUserExistService(req);
+    await isUserExistService(req);
     const {name,email,password,phone} = req.body; 
     const imagePath = req.file?.path;
 

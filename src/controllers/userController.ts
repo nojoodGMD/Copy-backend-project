@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-import {createUserService, deleteUserSevice, getAllUsersService, getSingleUserService, updateUserService} from '../services/userServices'
+import {createUserService, deleteUserSevice, getAllUsersService, getSingleUserService, isUserExistService, updateUserService} from '../services/userServices'
 
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
