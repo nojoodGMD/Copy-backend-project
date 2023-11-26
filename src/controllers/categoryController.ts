@@ -12,7 +12,7 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
   try {
     //the service for get all the category
     const category = await getCategory()
-    res.send({
+    res.status(200).json({
       message: 'all category are returned',
       payload: category,
     })
@@ -24,6 +24,7 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body
+    //services for create single product
     const category = await createSingleCategory(name)
     res.status(201).json({
       message: 'single category created.',
@@ -39,9 +40,7 @@ export const deleteSingleCategory = async (req: Request, res: Response, next: Ne
     const { slug } = req.params
     //service for delete single category
     await deleteCategory(slug)
-    res.json({
-      message: 'single category is dleted',
-    })
+    res.status(204).end()
   } catch (error) {
     next(error)
   }
@@ -51,8 +50,8 @@ export const getSingleCategory = async (req: Request, res: Response, next: NextF
     const { slug } = req.params
     //services
     const category = await getCategoryBySlug(slug)
-    res.json({
-      message: 'single category are returend',
+    res.status(200).json({
+      message: 'Single category returned',
       paylaod: category,
     })
   } catch (error) {
@@ -63,9 +62,10 @@ export const getSingleCategory = async (req: Request, res: Response, next: NextF
 export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
+    //services
     const category = await updateSingleCategory(slug, req)
-    res.send({
-      message: 'single category updated',
+    res.status(200).json({
+      message: 'Single category updated',
       payload: category,
     })
   } catch (error) {

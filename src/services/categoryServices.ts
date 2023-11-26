@@ -49,7 +49,7 @@ export const createSingleCategory=async(name:string)=>{
     );
     throw error;
   }
-  const category = new categoryModel({
+  const category:ICategory = new categoryModel({
     name,
     slug: slugify(name),
   })
