@@ -4,9 +4,16 @@ import { Request } from 'express'
 import { IProduct, Product } from '../models/productSchema'
 import { createHttpError } from '../errors/createError'
 import ApiError from '../errors/ApiError'
+import apiErrorHandler from '../middlewares/errorHandler'
 
 //GET->get all the product services
-export const productService = async (page: number, limit: number) => {
+export const productService = async (
+  page: number,
+  limit: number,
+  minPrice: number,
+  maxPrice: number
+) => {
+
   const count = await Product.countDocuments()
   if (count <= 0) {
     throw new ApiError(404, 'There are no products yet to show, please add products.')
@@ -17,8 +24,10 @@ export const productService = async (page: number, limit: number) => {
     page = totalPage
   }
   const skip = (page - 1) * limit
-
-  const products = await Product.find().sort({ name: 1 }).skip(skip).limit(limit)
+  const filterProductsByPrice = {
+    $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }],
+  }
+  const products = await Product.find(filterProductsByPrice).sort({ name: 1 }).skip(skip).limit(limit)
 
   return {
     products,
@@ -27,7 +36,7 @@ export const productService = async (page: number, limit: number) => {
   }
 }
 
-//get single prooduct
+//get single products
 export const findProductBySlug = async (slug: string): Promise<IProduct> => {
   const product = await Product.findOne({ slug: slug })
   if (!product) {
@@ -78,6 +87,7 @@ export const newProduct = async (
 
 //update a product
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
+
   if (req.body.name) {
     //update the slug value
     req.body.slug = slugify(req.body.name)

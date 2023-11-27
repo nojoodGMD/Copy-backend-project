@@ -1,4 +1,7 @@
+import slugify from 'slugify'
 import { Request, Response, NextFunction } from 'express'
+
+import { Product } from '../models/productSchema'
 
 import {
   findProductBySlug,
@@ -8,13 +11,15 @@ import {
   updateProductServices,
 } from '../services/productServices'
 
-//return all productes
+//return all products
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 3
+    const minPrice = Number(req.query.minPrice) || 0
+    const maxPrice = Number(req.query.maxPrice) || 200000
 
-    const result = await productService(page, limit)
+    const result = await productService(page, limit, minPrice, maxPrice)
 
     res.send({
       message: 'Get all products',
