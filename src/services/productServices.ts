@@ -20,7 +20,8 @@ export const productService = async (page: number, limit: number) => {
         page = totalPage;
     }
     const skip = (page - 1) * limit;
-    const products = await Product.find().skip(skip).limit(limit);
+
+    const products = await Product.find().sort({name : 1}).skip(skip).limit(limit);
 
     return {
         products,
