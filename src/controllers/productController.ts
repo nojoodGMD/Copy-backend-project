@@ -10,6 +10,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
   try {
     let page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 3
+
     const result = await productService(page, limit)
 
     res.send({
