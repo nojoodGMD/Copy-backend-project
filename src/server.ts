@@ -10,24 +10,21 @@ import myLogger from './middlewares/logger'
 import { dev } from './config/server'
 import { connectDB } from './config/db'
 
-
-const app: Application = express();
-const PORT: number = dev.app.port;
+const app: Application = express()
+const PORT: number = dev.app.port
 app.use(myLogger)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(morgan("dev"))
-
+app.use(morgan('dev'))
 
 app.use('/api/users', usersRouter)
 app.use('/api/orders', ordersRouter)
 app.use('/api/products', productsRouter)
-app.use('/api/categories',categoriesRouter)
+app.use('/api/categories', categoriesRouter)
 
 app.use(apiErrorHandler)
 
- 
 app.listen(PORT, () => {
   console.log('Server running http://localhost:' + PORT)
-  connectDB();
+  connectDB()
 })

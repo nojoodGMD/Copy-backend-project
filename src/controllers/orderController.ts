@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import slugify from 'slugify'
+
 import { orderModel } from '../models/orderSchema'
 import { createSingleOrder, deleteOrder, getOrder, updateOrder } from '../services/orderServices'
 
