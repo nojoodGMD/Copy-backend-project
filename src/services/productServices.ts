@@ -13,6 +13,7 @@ export const productService = async (
   minPrice: number,
   maxPrice: number
 ) => {
+
   const count = await Product.countDocuments()
   if (count <= 0) {
     throw new ApiError(404, 'There are no products yet to show, please add products.')
@@ -86,7 +87,8 @@ export const newProduct = async (
 
 //update a product
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
-  if (req.body.slug) {
+
+  if (req.body.name) {
     //update the slug value
     req.body.slug = slugify(req.body.name)
   }

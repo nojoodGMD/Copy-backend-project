@@ -24,7 +24,7 @@ export const getAllUsersService = async (page: number, limit: number) => {
 
 //GET-> get user by id
 export const getSingleUserService = async (req: Request) => {
-  const id = req.params.id
+  const { id } = req.params
   const users = await User.findOne({ id: id })
   if (!users) {
     const error = new ApiError(404, `User with this id does not exist.`)
@@ -35,7 +35,8 @@ export const getSingleUserService = async (req: Request) => {
 
 // Check if user already exists
 export const isUserExistService = async (req: Request) => {
-  const user = await User.exists({ email: req.body.email })
+  const { email } = req.body
+  const user = await User.exists({ email: email })
   if (user) {
     const error = new ApiError(409, 'User with this email already exists.')
     throw error
@@ -62,7 +63,7 @@ export const createUserService = async (req: Request) => {
 
 //delete user
 export const deleteUserSevice = async (req: Request) => {
-  const id = req.params.id
+  const { id } = req.params
   const user = await User.findOneAndDelete({ id: id })
   if (!user) {
     const error = new ApiError(404, "User with this id doesn't exist")
@@ -72,7 +73,7 @@ export const deleteUserSevice = async (req: Request) => {
 
 //update user
 export const updateUserService = async (req: Request) => {
-  const id = req.params.id
+  const { id } = req.params
   const newData = req.body
   const user = await User.findOneAndUpdate({ id: id }, newData, { new: true })
   if (!user) {

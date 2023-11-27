@@ -5,7 +5,6 @@ import {
   deleteUserSevice,
   getAllUsersService,
   getSingleUserService,
-  isUserExistService,
   updateUserService,
 } from '../services/userServices'
 

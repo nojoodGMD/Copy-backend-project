@@ -40,20 +40,17 @@ export const updateSingleCategory = async (slug: string, req: Request): Promise<
   return category
 }
 
-export const createSingleCategory=async(name:string)=>{
-  const categoryExists = await categoryModel.exists({ name });
+export const createSingleCategory = async (name: string) => {
+  const categoryExists = await categoryModel.exists({ name })
   if (categoryExists) {
-    const error = createHttpError(
-      409,
-      "Category already exist with this name"
-    );
-    throw error;
+    const error = createHttpError(409, 'Category already exist with this name')
+    throw error
   }
-  const category:ICategory = new categoryModel({
+  const category: ICategory = new categoryModel({
     name,
     slug: slugify(name),
   })
   await category.save()
-  
+
   return category
 }
