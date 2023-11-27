@@ -16,7 +16,7 @@ const router = Router()
 // GET: /users -> return all the users
 router.get('/', getAllUsers)
 // GET: /users:id -> return the user based on the id
-router.get('/:id', getUserById)
+router.get('/:_id', getUserById)
 //POST: /users/register -> register a new user
 router.post(
   '/register',
@@ -26,8 +26,8 @@ router.post(
   registerUser
 )
 //PUT: /user/:id -> update the user data based on the id
-router.put('/:id', validateUpdateUser, runValidation, updateUser)
+router.put('/:_id', validateUpdateUser, runValidation, updateUser)
 //DELETE: /users/:id -> delete the user based on the id
-router.delete('/:id', deleteUser)
+router.delete('/:_id', deleteUser)
 
 export default router

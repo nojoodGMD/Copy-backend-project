@@ -10,21 +10,24 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
     throw new ApiError(404, 'There are no user yet to show.')
   }
   const totalPage = Math.ceil(count / limit)
- 
-  
+
   if (page > totalPage) {
     page = totalPage
   }
   const skip = (page - 1) * limit
-  const search = req.query.search
+  const { search } = req.query
   let filter = {}
   if (search) {
     const searchRegExp = new RegExp('.*' + search + '.*', 'i')
 
     filter = {
-      $or: [{ name: { $regex: searchRegExp } }, { email: { $regex: searchRegExp } },{phone:{$regex:searchRegExp}}],
+      $or: [
+        { name: { $regex: searchRegExp } },
+        { email: { $regex: searchRegExp } },
+        { phone: { $regex: searchRegExp } },
+      ],
     }
-  } 
+  }
   const users = await User.find(filter).skip(skip).limit(limit)
   return {
     users,
@@ -34,11 +37,10 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
 }
 
 //GET-> get user by id
-export const getSingleUserService = async (req: Request) => {
-  const { id } = req.params
-  const users = await User.findOne({ id: id })
+export const getSingleUserService = async (id: string) => {
+  const users = await User.findOne({ _id: id })
   if (!users) {
-    const error = new ApiError(404, `User with this id does not exist.`)
+    const error = new ApiError(404, `User with this id:${id} does not exist.`)
     throw error
   }
   return users
@@ -73,9 +75,8 @@ export const createUserService = async (req: Request) => {
 }
 
 //delete user
-export const deleteUserSevice = async (req: Request) => {
-  const { id } = req.params
-  const user = await User.findOneAndDelete({ id: id })
+export const deleteUserSevice = async (id: string) => {
+  const user = await User.findOneAndDelete({ _id: id })
   if (!user) {
     const error = new ApiError(404, "User with this id doesn't exist")
     throw error
@@ -83,10 +84,9 @@ export const deleteUserSevice = async (req: Request) => {
 }
 
 //update user
-export const updateUserService = async (req: Request) => {
-  const { id } = req.params
+export const updateUserService = async (id: string, req: Request) => {
   const newData = req.body
-  const user = await User.findOneAndUpdate({ id: id }, newData, { new: true })
+  const user = await User.findOneAndUpdate({ _id: id }, newData, { new: true })
   if (!user) {
     const error = new ApiError(404, "User with this id doesn't exist")
     throw error

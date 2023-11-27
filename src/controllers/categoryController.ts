@@ -52,7 +52,7 @@ export const getSingleCategory = async (req: Request, res: Response, next: NextF
     const category = await getCategoryBySlug(slug)
     res.status(200).json({
       message: 'Single category returned',
-      paylaod: category,
+      payload: category,
     })
   } catch (error) {
     next(error)
