@@ -12,7 +12,8 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
   try {
     let page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 3
-    const result = await getAllUsersService(page, limit)
+    
+    const result = await getAllUsersService(page, limit,req)
     res.status(200).json({
       message: 'All users are fetched successfully!',
       payload: {

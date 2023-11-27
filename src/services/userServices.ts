@@ -4,17 +4,28 @@ import ApiError from '../errors/ApiError'
 import User from '../models/userSchema'
 
 //GET-> get all users
-export const getAllUsersService = async (page: number, limit: number) => {
+export const getAllUsersService = async (page: number, limit: number, req: Request) => {
   const count = await User.countDocuments()
   if (count <= 0) {
     throw new ApiError(404, 'There are no user yet to show.')
   }
   const totalPage = Math.ceil(count / limit)
+ 
+  
   if (page > totalPage) {
     page = totalPage
   }
   const skip = (page - 1) * limit
-  const users = await User.find().skip(skip).limit(limit)
+  const search = req.query.search
+  let filter = {}
+  if (search) {
+    const searchRegExp = new RegExp('.*' + search + '.*', 'i')
+
+    filter = {
+      $or: [{ name: { $regex: searchRegExp } }, { email: { $regex: searchRegExp } },{phone:{$regex:searchRegExp}}],
+    }
+  } 
+  const users = await User.find(filter).skip(skip).limit(limit)
   return {
     users,
     totalPage,

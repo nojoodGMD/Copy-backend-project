@@ -19,7 +19,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
     const minPrice = Number(req.query.minPrice) || 0
     const maxPrice = Number(req.query.maxPrice) || 200000
 
-    const result = await productService(page, limit, minPrice, maxPrice)
+    const result = await productService(page, limit, minPrice, maxPrice,req)
 
     res.send({
       message: 'Get all products',
