@@ -16,8 +16,14 @@ const orderSchema = new Schema({
     required: true,
   },
   products: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    required: true,
     ref: 'Product',
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
   },
 })
 

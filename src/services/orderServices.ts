@@ -1,4 +1,3 @@
-// order services
 import slugify from 'slugify'
 import { Request } from 'express'
 
