@@ -4,9 +4,17 @@ import slugify from 'slugify'
 import { ICategory, categoryModel } from '../models/categorySchema'
 import { createHttpError } from '../errors/createError'
 
-export const getCategory = async () => {
-  const category = await categoryModel.find()
-  return category
+export const getCategory = async (req: Request) => {
+  const categories = req.query.name
+  if (!categories) {
+    const category = await categoryModel.find()
+    return category
+  } else {
+    const filterProductByCategory = { name: { $eq: categories } }
+    const category = await categoryModel.find(filterProductByCategory)
+    console.log('inside else')
+    return category
+  }
 }
 
 export const deleteCategory = async (slug: string): Promise<ICategory> => {
