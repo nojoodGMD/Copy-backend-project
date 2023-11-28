@@ -1,7 +1,11 @@
-import { Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 import ApiError from '../errors/ApiError'
 import User from '../models/userSchema'
+import { dev } from '../config/server'
+import { handleSendEmail } from '../helper/sendEmail'
 
 //GET-> get all users
 export const getAllUsersService = async (page: number, limit: number) => {
@@ -44,21 +48,48 @@ export const isUserExistService = async (req: Request) => {
 }
 
 //create a new user
-export const createUserService = async (req: Request) => {
-  await isUserExistService(req)
-  const { name, email, password, phone } = req.body
-  const imagePath = req.file?.path
+export const createUserService = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await isUserExistService(req)
+    const { name, email, password, phone } = req.body
+    const imagePath = req.file?.path
 
-  const newUser = new User({
-    name: name,
-    email: email,
-    password: password,
-    phone: phone,
-    image: imagePath,
-  })
+    //protect the password
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const tokenPayload = {
+      name: name,
+      email: email,
+      password: hashedPassword,
+      phone: phone,
+      image: imagePath,
+    }
 
-  await newUser.save()
-  return newUser
+    //create the token
+    const token = jwt.sign(tokenPayload, dev.app.jwtUserActivationkey, {
+      expiresIn: '5m',
+    })
+
+    //send an email -> activiate the user (token) inside the email -> click verfied
+    const emailData = {
+      email: email,
+      subject: 'Activate your account',
+      html: `<h1> Hello ${name} </h1>
+
+    <p> Please activate your account by
+    <a href= "http://localhost:8080/users/activate/${token}"> clicking on this link </a> </p>`,
+    }
+
+    //send the email
+    await handleSendEmail(emailData);
+
+
+    res.status(200).json({
+      message: 'check your email adress to activate your account',
+      token: token,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
 //delete user
