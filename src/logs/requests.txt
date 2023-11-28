@@ -778,3 +778,17 @@ Method: GET, Path: /api/users, Date: 11/27/2023, Time: 11:26:19 PM
 Method: GET, Path: /api/users/65642c475a06294321873d15, Date: 11/27/2023, Time: 11:26:31 PM
 Method: DELETE, Path: /api/users/65642c475a06294321873d15, Date: 11/27/2023, Time: 11:26:39 PM
 Method: GET, Path: /api/users/65642c475a06294321873d15, Date: 11/27/2023, Time: 11:26:45 PM
+Method: GET, Path: /api/categories, Date: 11/28/2023, Time: 2:02:18 PM
+Method: GET, Path: /api/categories, Date: 11/28/2023, Time: 2:02:35 PM
+Method: POST, Path: /api/products, Date: 11/28/2023, Time: 2:02:47 PM
+Method: GET, Path: /api/products, Date: 11/28/2023, Time: 2:03:04 PM
+Method: GET, Path: /api/categories, Date: 11/28/2023, Time: 2:11:47 PM
+Method: POST, Path: /api/products, Date: 11/28/2023, Time: 2:12:28 PM
+Method: GET, Path: /api/products, Date: 11/28/2023, Time: 2:12:35 PM
+Method: GET, Path: /api/categories, Date: 11/28/2023, Time: 3:19:04 PM
+Method: GET, Path: /api/categories, Date: 11/28/2023, Time: 3:19:41 PM
+Method: GET, Path: /api/products, Date: 11/28/2023, Time: 3:20:10 PM
+Method: POST, Path: /api/products, Date: 11/28/2023, Time: 3:20:33 PM
+Method: GET, Path: /api/products, Date: 11/28/2023, Time: 3:20:46 PM
+Method: GET, Path: /api/products, Date: 11/28/2023, Time: 3:23:18 PM
+Method: GET, Path: /api/products, Date: 11/28/2023, Time: 3:23:30 PM
