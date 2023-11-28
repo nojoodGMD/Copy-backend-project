@@ -2,7 +2,6 @@ import slugify from 'slugify'
 import { Request, Response, NextFunction } from 'express'
 
 import { Product } from '../models/productSchema'
-
 import {
   findProductBySlug,
   newProduct,

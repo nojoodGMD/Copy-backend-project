@@ -24,7 +24,7 @@ export const productService = async (
     page = totalPage
   }
   const skip = (page - 1) * limit
-  const search = req.query.search
+  const { search } = req.query
   let filter = {}
   if (search) {
     const searchRegExp = new RegExp('.*' + search + '.*', 'i')
