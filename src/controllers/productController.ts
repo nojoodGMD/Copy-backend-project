@@ -50,9 +50,9 @@ export const getProductBySlug = async (req: Request, res: Response, next: NextFu
 //Crete a product
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, price, quantity, description, sold, shipping } = req.body
+    const { name, price, quantity, description, sold, shipping,category } = req.body
 
-    const newItem = await newProduct(name, price, quantity, description, sold, shipping)
+    const newItem = await newProduct(name, price, quantity, description, sold, shipping,category)
 
     res.status(201).send({ message: 'Product is created' })
   } catch (error) {
