@@ -11,9 +11,9 @@ export const productService = async (
   page: number,
   limit: number,
   minPrice: number,
-  maxPrice: number
+  maxPrice: number,
+  req: Request
 ) => {
-
   const count = await Product.countDocuments()
   if (count <= 0) {
     throw new ApiError(404, 'There are no products yet to show, please add products.')
@@ -24,10 +24,19 @@ export const productService = async (
     page = totalPage
   }
   const skip = (page - 1) * limit
-  const filterProductsByPrice = {
-    $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }],
+  const search = req.query.search
+  let filter = {}
+  if (search) {
+    const searchRegExp = new RegExp('.*' + search + '.*', 'i')
+
+    filter = {
+      $or: [{ name: { $regex: searchRegExp } }, { description: { $regex: searchRegExp } }],
+    }
+  } else if (minPrice || maxPrice) {
+    filter = { $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }] }
   }
-  const products = await Product.find(filterProductsByPrice).sort({ name: 1 }).skip(skip).limit(limit)
+
+  const products = await Product.find(filter).sort({ name: 1 }).skip(skip).limit(limit)
 
   return {
     products,
@@ -87,7 +96,6 @@ export const newProduct = async (
 
 //update a product
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
-
   if (req.body.name) {
     //update the slug value
     req.body.slug = slugify(req.body.name)
