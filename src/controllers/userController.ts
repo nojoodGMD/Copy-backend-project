@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
+
+import jwt from "jsonwebtoken";
 import mongoose from 'mongoose'
+
 
 import { createHttpError } from '../errors/createError'
 import {
@@ -9,6 +12,9 @@ import {
   getSingleUserService,
   updateUserService,
 } from '../services/userServices'
+import { dev } from '../config/server'
+import User from '../models/userSchema'
+import { createHttpError } from '../errors/createError';
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -49,7 +55,7 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const newUser = await createUserService(req)
+    const newUser = await createUserService(req, res, next)
     res.status(201).json({
       message: 'user is registered successfully',
       payload: newUser,
@@ -93,3 +99,36 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     }
   }
 }
+
+export const activateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.body.token;
+
+    if (!token) {
+      throw createHttpError(404, "Please provide a valid token");
+    }
+    const decoded = jwt.verify(token, dev.app.jwtUserActivationkey);
+
+    if (!decoded || decoded instanceof jwt.TokenExpiredError) {
+    }
+
+    await User.create(decoded);
+
+    res.status(201).json({
+      message: "user is registerd successfuly",
+    });
+  } catch (error) {
+    //token expired, test it 
+    if (error instanceof jwt.TokenExpiredError) {
+      next (createHttpError(401, "your token has expired"));
+    }
+    else{
+        // next(error);
+        next(createHttpError(404, "Invalid token"));
+    }
+  }
+};

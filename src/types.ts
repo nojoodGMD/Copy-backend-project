@@ -15,4 +15,10 @@ export interface Error {
   status?: number
   message?: string
 }
+///type because we are using typescriot 
+export type EmailDataType = {
+  email:string;
+  subject: string;
+  html: string;
+}
 
