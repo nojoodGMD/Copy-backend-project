@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt from "jsonwebtoken";
 
+import jwt from "jsonwebtoken";
+import mongoose from 'mongoose'
+
+
+import { createHttpError } from '../errors/createError'
 import {
   createUserService,
   deleteUserSevice,
@@ -16,7 +20,8 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
   try {
     let page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 3
-    const result = await getAllUsersService(page, limit)
+
+    const result = await getAllUsersService(page, limit, req)
     res.status(200).json({
       message: 'All users are fetched successfully!',
       payload: {
@@ -32,13 +37,19 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
 
 export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await getSingleUserService(req)
+    const { _id } = req.params
+    const user = await getSingleUserService(_id)
     res.status(200).json({
       message: 'users is returned successfully!',
       payload: user,
     })
   } catch (error) {
-    next(error)
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
   }
 }
 
@@ -56,24 +67,36 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await updateUserService(req)
+    const { _id } = req.params
+    const user = await updateUserService(_id, req)
     res.status(200).json({
       message: 'users is updated successfully!',
       payload: user,
     })
   } catch (error) {
-    next(error)
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
   }
 }
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await deleteUserSevice(req)
+    const { _id } = req.params
+    await deleteUserSevice(_id)
     res.status(200).json({
       message: 'users is deleted successfully!',
     })
   } catch (error) {
-    next(error)
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 import { Schema, model, Document } from 'mongoose'
+import { ICategory } from './categorySchema'
 
 export interface IProduct extends Document {
   name: string
@@ -11,6 +12,9 @@ export interface IProduct extends Document {
   description: string
   createdAt?: string
   updatedAt?: string
+  //insude the category schema idefine the id for category 
+  //and i use here to make relation ship between product and category
+  category: ICategory["_id"];
 }
 
 const productSchema = new Schema(
@@ -63,7 +67,11 @@ const productSchema = new Schema(
       trim: true,
       minlength: [5, 'product description must be at least 5 character long'],
     },
+    //to make relation between product to the category
+    //Schema.Types.ObjectId the id from the collection of category
+    category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
   },
+  
   { timestamps: true }
 )
 

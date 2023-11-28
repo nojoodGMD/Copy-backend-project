@@ -5,15 +5,16 @@ import { IProduct, Product } from '../models/productSchema'
 import { createHttpError } from '../errors/createError'
 import ApiError from '../errors/ApiError'
 import apiErrorHandler from '../middlewares/errorHandler'
+import { ICategory } from '../models/categorySchema'
 
 //GET->get all the product services
 export const productService = async (
   page: number,
   limit: number,
   minPrice: number,
-  maxPrice: number
+  maxPrice: number,
+  req: Request
 ) => {
-
   const count = await Product.countDocuments()
   if (count <= 0) {
     throw new ApiError(404, 'There are no products yet to show, please add products.')
@@ -24,10 +25,19 @@ export const productService = async (
     page = totalPage
   }
   const skip = (page - 1) * limit
-  const filterProductsByPrice = {
-    $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }],
+  const { search } = req.query
+  let filter = {}
+  if (search) {
+    const searchRegExp = new RegExp('.*' + search + '.*', 'i')
+
+    filter = {
+      $or: [{ name: { $regex: searchRegExp } }, { description: { $regex: searchRegExp } }],
+    }
+  } else if (minPrice || maxPrice) {
+    filter = { $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }] }
   }
-  const products = await Product.find(filterProductsByPrice).sort({ name: 1 }).skip(skip).limit(limit)
+//populate('category') for get the information of category when i try get the product
+  const products:IProduct[] = await Product.find(filter).sort({ name: 1 }).skip(skip).limit(limit) .populate("category")
 
   return {
     products,
@@ -63,7 +73,8 @@ export const newProduct = async (
   quantity: number,
   description: string,
   sold: boolean,
-  shipping: string
+  shipping: string,
+  category:ICategory['_id']
 ) => {
   // Check if a product with the same name already exists
   const productExist = await Product.exists({ name })
@@ -80,6 +91,7 @@ export const newProduct = async (
     description,
     sold,
     shipping,
+    category
   })
 
   await newProduct.save()
@@ -87,7 +99,6 @@ export const newProduct = async (
 
 //update a product
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
-
   if (req.body.name) {
     //update the slug value
     req.body.slug = slugify(req.body.name)

@@ -11,7 +11,7 @@ import {
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     //the service for get all the category
-    const category = await getCategory()
+    const category = await getCategory(req)
     res.status(200).json({
       message: 'all category are returned',
       payload: category,
@@ -52,7 +52,7 @@ export const getSingleCategory = async (req: Request, res: Response, next: NextF
     const category = await getCategoryBySlug(slug)
     res.status(200).json({
       message: 'Single category returned',
-      paylaod: category,
+      payload: category,
     })
   } catch (error) {
     next(error)
