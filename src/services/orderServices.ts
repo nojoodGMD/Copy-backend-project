@@ -3,6 +3,7 @@ import { Request } from 'express'
 import { IItemes, IOrder, orderModel } from '../models/orderSchema'
 import { createHttpError } from '../errors/createError'
 import { Product } from '../models/productSchema'
+import { it } from 'node:test'
 
 export const getOrder = async () => {
   const order = await orderModel.find().populate("userId")
@@ -20,20 +21,22 @@ export const getSingleOrder = async (id: string) => {
 }
 export const createSingleOrder = async (req:Request) => {
  
-  const { userId, orderItems , shippingAddress } = req.body
-  
+  const { userId , orderItems, shippingAddress } : {userId:string , orderItems: IItemes[], shippingAddress:string } = req.body
+
   if (!userId || !orderItems || !shippingAddress) {
     throw createHttpError(404, `Order must contain products items and user data and shipping address`)
   }
 
-  console.log(orderItems)
+  //Get the total amount of money
+  const productsID = orderItems.map(item=> item.product)
+  const products = await Product.find({ _id: { $in: productsID } })
+  const totalAmount = products.reduce((total, product) => total + product.price, 0)
 
- 
-
-  const order  = new orderModel({
+  const order = new orderModel({
     userId,
     orderItems,
-    shippingAddress, 
+    shippingAddress,
+    totalAmount
   })
   await order.save()
   return order

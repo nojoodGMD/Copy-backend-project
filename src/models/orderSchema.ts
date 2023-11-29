@@ -1,11 +1,10 @@
 import { Schema, model } from 'mongoose'
 import { IUser } from './userSchema'
 import { IProduct } from './productSchema'
-import { execSync } from 'child_process'
 
 export interface IOrder extends Document {
   userId: IUser['_id']
-  orderItems: [IItemes["_id"]]
+  orderItems: IItemes[]
   totalAmount: Number
   shippingAddress: String
 }
