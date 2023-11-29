@@ -1,20 +1,17 @@
 import { Schema, model } from 'mongoose'
+import { IUser } from './userSchema'
+import { IProduct } from './productSchema'
 
 export interface IOrder {
-  name: string
+  user: IUser['_id']
   products: string
-  slug: string
 }
-
+export interface IItemes {
+  _id: string
+  product: IProduct['_id']
+  quantity: number
+}
 const orderSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  slug: {
-    type: String,
-    required: true,
-  },
   orderItems: [
     {
       qty: { type: Number, required: true },
