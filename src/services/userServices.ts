@@ -69,6 +69,7 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
     //protect the password
     const hashedPassword = await bcrypt.hash(password, 10)
+    //token
     const tokenPayload = {
       name: name,
       email: email,
@@ -100,7 +101,7 @@ export const createUserService = async (req: Request, res: Response, next: NextF
       message: 'check your email adress to activate your account',
       token: token,
     });
-  } catch (error) {
+  } catch (error) { 
     next(error);
   }
 }

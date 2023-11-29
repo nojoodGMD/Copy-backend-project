@@ -1,16 +1,17 @@
 import { Request } from 'express'
 
-import { orderModel } from '../models/orderSchema'
+import { IItemes, IOrder, orderModel } from '../models/orderSchema'
 import { createHttpError } from '../errors/createError'
+import { Product } from '../models/productSchema'
 
 export const getOrder = async () => {
-  const order = await orderModel.find().populate("user","orderItems")
+  const order = await orderModel.find().populate("userId")
   return order
 }
 
-export const getSingleOrder = async (id: string) => {
+export const getSingleOrder = async (id: string) => { 
  
-  const order = await orderModel.findOne({ _id:id}).populate("user","orderItems")
+  const order = await orderModel.findOne({ _id:id}).populate("userId")
   if (!order) {
     const error = createHttpError(404, `order is not found with this id: ${id}`)
     throw error
@@ -18,10 +19,21 @@ export const getSingleOrder = async (id: string) => {
   return order
 }
 export const createSingleOrder = async (req:Request) => {
-  const { user,orderItems } = req.body
-  const order = new orderModel({
-    user,
-    orderItems
+ 
+  const { userId, orderItems , shippingAddress } = req.body
+  
+  if (!userId || !orderItems || !shippingAddress) {
+    throw createHttpError(404, `Order must contain products items and user data and shipping address`)
+  }
+
+  console.log(orderItems)
+
+ 
+
+  const order  = new orderModel({
+    userId,
+    orderItems,
+    shippingAddress, 
   })
   await order.save()
   return order
