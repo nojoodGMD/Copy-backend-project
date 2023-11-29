@@ -1,8 +1,14 @@
 import { NextFunction, Request, Response } from 'express'
-import slugify from 'slugify'
 
-import { orderModel } from '../models/orderSchema'
-import { createSingleOrder, deleteOrder, getOrder, updateOrder } from '../services/orderServices'
+import {
+  createSingleOrder,
+  deleteOrder,
+  getOrder,
+  getSingleOrder,
+  updateOrder,
+} from '../services/orderServices'
+import mongoose from 'mongoose'
+import { createHttpError } from '../errors/createError'
 
 export const getAllOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -15,18 +21,29 @@ export const getAllOrder = async (req: Request, res: Response, next: NextFunctio
     next(error)
   }
 }
-
+export const getOrderById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { _id } = req.params
+    const user = await getSingleOrder(_id)
+    res.status(200).json({
+      message: 'order is returned successfully!',
+      payload: user,
+    })
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
+  }
+}
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name } = req.body
-    await createSingleOrder(name)
-    const order = new orderModel({
-      name,
-      slug: slugify(name),
-    })
-    await order.save()
+    const order = await createSingleOrder(req)
+
     res.status(201).json({
-      message: 'single category created.',
+      message: 'single order created.',
       payload: order,
     })
   } catch (error) {
@@ -36,8 +53,8 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
 
 export const updateSingleOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { slug } = req.params
-    const order = await updateOrder(slug, req)
+    const { _id } = req.params
+    const order = await updateOrder(_id, req)
     res.send({
       message: 'update single order ',
       payload: order,
@@ -47,10 +64,10 @@ export const updateSingleOrder = async (req: Request, res: Response, next: NextF
   }
 }
 
-export const deleteSingleCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteSingleOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { slug } = req.params
-    await deleteOrder(slug)
+    const { _id } = req.params
+    await deleteOrder(_id)
     res.json({
       message: 'Delete order',
     })

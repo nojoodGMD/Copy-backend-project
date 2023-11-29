@@ -1,49 +1,46 @@
-import slugify from 'slugify'
 import { Request } from 'express'
 
 import { orderModel } from '../models/orderSchema'
 import { createHttpError } from '../errors/createError'
 
 export const getOrder = async () => {
-  const order = await orderModel.find()
+  const order = await orderModel.find().populate("user","orderItems")
   return order
 }
 
-export const getSingleOrder = async (slug: string) => {
-  const order = await orderModel.find({ slug })
-  if (order.length == 0) {
-    const error = createHttpError(404, `order is not found with this slug: ${slug}`)
+export const getSingleOrder = async (id: string) => {
+ 
+  const order = await orderModel.findOne({ _id:id}).populate("user","orderItems")
+  if (!order) {
+    const error = createHttpError(404, `order is not found with this id: ${id}`)
     throw error
   }
   return order
 }
-export const createSingleOrder = async (name: string) => {
-  const orderExists = await orderModel.exists({ name })
-  if (orderExists) {
-    const error = createHttpError(409, 'order already exist with this name')
-    throw error
-  }
-
-  return orderExists
+export const createSingleOrder = async (req:Request) => {
+  const { user,orderItems } = req.body
+  const order = new orderModel({
+    user,
+    orderItems
+  })
+  await order.save()
+  return order
 }
 
-export const updateOrder = async (slug: string, req: Request) => {
-  if (req.body.name) {
-    req.body.slug = slugify(req.body.name)
-  }
+export const updateOrder = async (id: string, req: Request) => {
   const updateData = req.body
-  const order = await orderModel.findOneAndUpdate({ slug }, updateData, { new: true })
+  const order = await orderModel.findOneAndUpdate({ _id:id }, updateData, { new: true })
   if (!order) {
-    const error = createHttpError(404, `order is not found with this slug: ${slug}`)
+    const error = createHttpError(404, `order is not found with this id: ${id}`)
     throw error
   }
   return order
 }
 
-export const deleteOrder = async (slug: string) => {
-  const order = await orderModel.findOneAndDelete({ slug })
+export const deleteOrder = async (id: string) => {
+  const order = await orderModel.findOneAndDelete({ _id:id })
   if (!order) {
-    const error = createHttpError(404, `order is not found with this slug: ${slug}`)
+    const error = createHttpError(404, `order is not found with this id: ${id}`)
     throw error
   }
   return order

@@ -1,6 +1,5 @@
 import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
-import { v4 as uuidv4 } from 'uuid'
 export interface IUser extends Document {
   name: string
   role: string
@@ -9,7 +8,6 @@ export interface IUser extends Document {
   password: string
   image: string
   phone: string
-  order: Schema
 }
 
 const userSchema = new Schema<IUser>(
@@ -59,13 +57,6 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: [10, 'Please enter a correct phone number length.'],
     },
-    // relation between order and user should be many orders to one user
-    order: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Order',
-      },
-    ],
   },
   { timestamps: true }
 )

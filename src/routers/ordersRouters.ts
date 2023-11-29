@@ -4,23 +4,21 @@ import {
   getAllOrder,
   createOrder,
   updateSingleOrder,
-  deleteSingleCategory,
+  deleteSingleOrder,
+  getOrderById,
 } from '../controllers/orderController'
-import { runValidation } from './../validation/runValidation'
-import { validateCreateOrder, validateUpdateOrder } from '../validation/orderVal'
-import { getSingleOrder } from '../services/orderServices'
 
 const router = express.Router()
 
 //GET->/api/orders-> get all orders
 router.get('/', getAllOrder)
 //GET->/api/orders/slug-> get a single orders
-router.get('/:slug', getSingleOrder)
+router.get('/:_id', getOrderById)
 //POST->/api/orders-> create an order
-router.post('/', validateCreateOrder, runValidation, createOrder)
+router.post('/', createOrder)
 //PUT ->/api/orders/slug->to update the single order
-router.put('/:slug', validateUpdateOrder, runValidation, updateSingleOrder)
+router.put('/:_id', updateSingleOrder)
 //DELETE ->/api/orders/slug->to delete an order
-router.delete('/:slug', deleteSingleCategory)
+router.delete('/:_id', deleteSingleOrder)
 
 export default router
