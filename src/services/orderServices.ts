@@ -1,16 +1,17 @@
 import { Request } from 'express'
 
-import { orderModel } from '../models/orderSchema'
+import { IItemes, orderModel } from '../models/orderSchema'
 import { createHttpError } from '../errors/createError'
+import { Product } from '../models/productSchema'
 
 export const getOrder = async () => {
-  const order = await orderModel.find().populate("user","orderItems")
+  const order = await orderModel.find().populate(['userId', 'orderItems'])
   return order
 }
 
-export const getSingleOrder = async (id: string) => {
+export const getSingleOrder = async (id: string) => { 
  
-  const order = await orderModel.findOne({ _id:id}).populate("user","orderItems")
+  const order = await orderModel.findOne({ _id:id}).populate(['userId', 'orderItems'])
   if (!order) {
     const error = createHttpError(404, `order is not found with this id: ${id}`)
     throw error
@@ -18,10 +19,23 @@ export const getSingleOrder = async (id: string) => {
   return order
 }
 export const createSingleOrder = async (req:Request) => {
-  const { user,orderItems } = req.body
+ 
+  const { userId , orderItems, shippingAddress } : {userId:string , orderItems: IItemes[], shippingAddress:string } = req.body
+
+  if (!userId || !orderItems || !shippingAddress) {
+    throw createHttpError(404, `Order must contain products items and user data and shipping address`)
+  }
+
+  //Get the total amount of money
+  const productsID = orderItems.map(item=> item.product)
+  const products = await Product.find({ _id: { $in: productsID } })
+  const totalAmount = products.reduce((total, product) => total + product.price, 0)
+
   const order = new orderModel({
-    user,
-    orderItems
+    userId,
+    orderItems,
+    shippingAddress,
+    totalAmount
   })
   await order.save()
   return order
