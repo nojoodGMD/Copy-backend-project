@@ -2,16 +2,18 @@ import { Schema, model } from 'mongoose'
 import { IUser } from './userSchema'
 import { IProduct } from './productSchema'
 
-export interface IOrder extends Document {
-  userId: IUser['_id']
-  orderItems: IItemes[]
-  totalAmount: Number
-  shippingAddress: String
-}
 export interface IItemes extends Document{
   _id: string
   product: IProduct['_id']
   quantity: number
+}
+export interface IOrder extends Document {
+  _id: string
+  userId: IUser['_id']
+  orderItems: IItemes[]
+  totalAmount: Number
+  status:  'Pending'|'Shipped' |'Delivered' | 'Canceled'
+  shippingAddress: String
 }
 
 const orderSchema = new Schema<IOrder>({
@@ -34,6 +36,16 @@ const orderSchema = new Schema<IOrder>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User',
+  },
+  status:{
+    type: String,
+    default: 'Pending',
+    enum: [
+      'Pending',
+      'Shipped',
+      'Delivered',
+      'Canceled'
+    ]
   },
   totalAmount: {
     type: Number,
