@@ -7,11 +7,16 @@ import {
   getCategoryBySlug,
   updateSingleCategory,
 } from '../services/categoryServices'
+import { createHttpError } from '../errors/createError'
 
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     //the service for get all the category
     const category = await getCategory(req)
+    if(category.length === 0){
+      const error = createHttpError(404, 'There are no category yet to show.')
+      throw error
+    }
     res.status(200).json({
       message: 'all category are returned',
       payload: category,
@@ -40,7 +45,9 @@ export const deleteSingleCategory = async (req: Request, res: Response, next: Ne
     const { slug } = req.params
     //service for delete single category
     await deleteCategory(slug)
-    res.status(204).end()
+    res.status(200).json({
+      message: `Category with value ${slug} is deleted`,
+    })
   } catch (error) {
     next(error)
   }

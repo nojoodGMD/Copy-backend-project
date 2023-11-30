@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import mongoose from 'mongoose'
 
 
@@ -114,11 +114,8 @@ export const activateUser = async (
     }
     const decoded = jwt.verify(token, dev.app.jwtUserActivationkey);
 
-    if (!decoded || decoded instanceof TokenExpiredError) {
-      throw createHttpError(401, 'Invalid token');
-    }
 
-    await User.create(decoded);
+    await User.create(decoded)
 
     res.status(201).json({
       message: "user is registered successfully",

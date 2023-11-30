@@ -1,21 +1,7 @@
-import { Schema, model, Document } from 'mongoose'
-import { ICategory } from './categorySchema'
+import { Schema, model } from 'mongoose'
 
-export interface IProduct extends Document {
-  name: string
-  slug: string
-  price: number
-  image: string
-  quantity: number
-  sold: number
-  shipping: number
-  description: string
-  createdAt?: string
-  updatedAt?: string
-  //insude the category schema idefine the id for category 
-  //and i use here to make relation ship between product and category
-  category: ICategory["_id"];
-}
+import { IProduct } from '../Interfaces/productInterface'
+
 
 const productSchema = new Schema(
   {
@@ -47,8 +33,8 @@ const productSchema = new Schema(
 
     sold: {
       type: Number,
-      required: true,
       trim: true,
+      default: 0
     },
 
     image: {
@@ -66,10 +52,15 @@ const productSchema = new Schema(
       required: true,
       trim: true,
       minlength: [5, 'product description must be at least 5 character long'],
+      maxlength: [300, 'product description must be at most 300 character long']
     },
     //to make relation between product to the category
     //Schema.Types.ObjectId the id from the collection of category
-    category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true,
+    },
   },
   
   { timestamps: true }

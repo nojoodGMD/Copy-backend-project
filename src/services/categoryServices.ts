@@ -1,8 +1,9 @@
 import { Request } from 'express'
 import slugify from 'slugify'
 
-import { ICategory, categoryModel } from '../models/categorySchema'
+import { categoryModel } from '../models/categorySchema'
 import { createHttpError } from '../errors/createError'
+import { ICategory } from '../Interfaces/categoryInterface'
 
 export const getCategory = async (req: Request) => {
   const categories = req.query.name

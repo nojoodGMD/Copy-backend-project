@@ -4,13 +4,14 @@ import bcrypt from 'bcrypt'
 import ApiError from '../errors/ApiError'
 import User from '../models/userSchema'
 import { handleSendEmail } from '../helper/sendEmail'
+import { createHttpError } from '../errors/createError'
 import generateToken from '../util/generateToken'
 
 //GET-> get all users
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
   const count = await User.countDocuments()
   if (count <= 0) {
-    throw new ApiError(404, 'There are no user yet to show.')
+    throw createHttpError(404, 'There are no user yet to show.')
   }
   const totalPage = Math.ceil(count / limit)
 
@@ -31,7 +32,7 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
       ],
     }
   }
-  const users = await User.find(filter).skip(skip).limit(limit)
+  const users = await User.find(filter).sort({ name: 1 }).skip(skip).limit(limit)
   return {
     users,
     totalPage,
@@ -50,8 +51,7 @@ export const getSingleUserService = async (id: string) => {
 }
 
 // Check if user already exists
-export const isUserExistService = async (req: Request) => {
-  const { email } = req.body
+export const isUserExistService = async (email: string) => {
   const user = await User.exists({ email: email })
   if (user) {
     const error = new ApiError(409, 'User with this email already exists.')
@@ -62,8 +62,8 @@ export const isUserExistService = async (req: Request) => {
 //create a new user
 export const createUserService = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await isUserExistService(req)
     const { name, email, password, phone } = req.body
+    await isUserExistService(email)
     const imagePath = req.file?.path
 
     //protect the password

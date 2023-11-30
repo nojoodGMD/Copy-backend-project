@@ -1,14 +1,6 @@
 import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
-export interface IUser extends Document {
-  name: string
-  role: string
-  isBanned: boolean
-  email: string
-  password: string
-  image: string
-  phone: string
-}
+import { IUser } from '../Interfaces/userInterface'
 
 const userSchema = new Schema<IUser>(
   {
@@ -57,6 +49,12 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: [10, 'Please enter a correct phone number length.'],
     },
+    orders:[
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Order',
+      }
+    ]
   },
   { timestamps: true }
 )

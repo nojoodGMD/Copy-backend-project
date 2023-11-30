@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import {
   findProductBySlug,
   newProduct,
-  productService,
+  getAllProductService,
   removeProductBySlug,
   updateProductServices,
 } from '../services/productServices'
@@ -16,7 +16,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
     const minPrice = Number(req.query.minPrice) || 0
     const maxPrice = Number(req.query.maxPrice) || 200000
 
-    const result = await productService(page, limit, minPrice, maxPrice, req)
+    const result = await getAllProductService(page, limit, minPrice, maxPrice, req)
 
     res.send({
       message: 'Get all products',
@@ -27,6 +27,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
       },
     })
   } catch (error) {
+    console.error('Error get all product:', error);
     next(error)
   }
 }
@@ -47,12 +48,13 @@ export const getProductBySlug = async (req: Request, res: Response, next: NextFu
 //Crete a product
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, price, quantity, description, sold, shipping, category } = req.body
+    const { name, price, quantity, description, sold, shipping, categoryId } = req.body
 
-    const newItem = await newProduct(name, price, quantity, description, sold, shipping, category)
+    const newItem = await newProduct(name, price, quantity, description, sold, shipping, categoryId)
 
     res.status(201).send({ message: 'Product is created' })
   } catch (error) {
+    console.error('Error create product:', error);
     next(error)
   }
 }

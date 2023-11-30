@@ -1,8 +1,10 @@
 import { Request } from 'express'
 
-import { IItemes, orderModel } from '../models/orderSchema'
+import { orderModel } from '../models/orderSchema'
 import { createHttpError } from '../errors/createError'
 import { Product } from '../models/productSchema'
+import User from '../models/userSchema'
+import { IItemes } from '../Interfaces/orderInterface'
 
 export const getOrder = async () => {
   const order = await orderModel.find().populate(['userId', 'orderItems'])
@@ -24,6 +26,11 @@ export const createSingleOrder = async (req:Request) => {
 
   if (!userId || !orderItems || !shippingAddress) {
     throw createHttpError(404, `Order must contain products items and user data and shipping address`)
+  }
+
+  const  user = await User.findOne({ _id: userId })
+  if(!user) {
+    throw createHttpError(404, `User is not found with this id: ${userId}`)
   }
 
   //Get the total amount of money

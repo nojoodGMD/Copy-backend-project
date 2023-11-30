@@ -1,18 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { IUser } from './userSchema'
-import { IProduct } from './productSchema'
-
-export interface IOrder extends Document {
-  userId: IUser['_id']
-  orderItems: IItemes[]
-  totalAmount: Number
-  shippingAddress: String
-}
-export interface IItemes extends Document{
-  _id: string
-  product: IProduct['_id']
-  quantity: number
-}
+import { IOrder } from '../Interfaces/orderInterface'
 
 const orderSchema = new Schema<IOrder>({
   orderItems: [
@@ -34,6 +21,16 @@ const orderSchema = new Schema<IOrder>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User',
+  },
+  status:{
+    type: String,
+    default: 'Pending',
+    enum: [
+      'Pending',
+      'Shipped',
+      'Delivered',
+      'Canceled'
+    ]
   },
   totalAmount: {
     type: Number,
