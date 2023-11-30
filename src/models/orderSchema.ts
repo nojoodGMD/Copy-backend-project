@@ -1,20 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { IUser } from './userSchema'
-import { IProduct } from './productSchema'
-
-export interface IItemes extends Document{
-  _id: string
-  product: IProduct['_id']
-  quantity: number
-}
-export interface IOrder extends Document {
-  _id: string
-  userId: IUser['_id']
-  orderItems: IItemes[]
-  totalAmount: Number
-  status:  'Pending'|'Shipped' |'Delivered' | 'Canceled'
-  shippingAddress: String
-}
+import { IOrder } from '../Interfaces/orderInterface'
 
 const orderSchema = new Schema<IOrder>({
   orderItems: [

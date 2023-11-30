@@ -1,14 +1,14 @@
 import slugify from 'slugify'
 import { Request } from 'express'
 
-import { IProduct, Product } from '../models/productSchema'
+import { Product } from '../models/productSchema'
 import { createHttpError } from '../errors/createError'
-import ApiError from '../errors/ApiError'
-import apiErrorHandler from '../middlewares/errorHandler'
-import { ICategory } from '../models/categorySchema'
+import { IProduct } from '../Interfaces/productInterface'
+import { ICategory } from '../Interfaces/categoryInterface'
+
 
 //GET->get all the product services
-export const productService = async (
+export const getAllProductService = async (
   page: number,
   limit: number,
   minPrice: number,
@@ -17,9 +17,10 @@ export const productService = async (
 ) => {
   const count = await Product.countDocuments()
   if (count <= 0) {
-    throw new ApiError(404, 'There are no products yet to show, please add products.')
+    throw createHttpError(404, 'There are no products yet to show, please add products.')
   }
 
+  //pagination
   const totalPage = Math.ceil(count / limit)
   if (page > totalPage) {
     page = totalPage
@@ -30,14 +31,18 @@ export const productService = async (
   if (search) {
     const searchRegExp = new RegExp('.*' + search + '.*', 'i')
 
+    //Search or filter by price
     filter = {
       $or: [{ name: { $regex: searchRegExp } }, { description: { $regex: searchRegExp } }],
     }
   } else if (minPrice || maxPrice) {
     filter = { $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }] }
   }
-//populate('category') for get the information of category when i try get the product
-  const products:IProduct[] = await Product.find(filter).sort({ name: 1 }).skip(skip).limit(limit) .populate("category")
+
+  const products:IProduct[] = await Product.find(filter).sort({ price: 1 }).skip(skip).limit(limit) .populate("categoryId")
+  if(products.length == 0){
+    throw createHttpError(404,"No products with those filters were found")
+  }
 
   return {
     products,
@@ -50,7 +55,7 @@ export const productService = async (
 export const findProductBySlug = async (slug: string): Promise<IProduct> => {
   const product = await Product.findOne({ slug: slug })
   if (!product) {
-    throw new Error('Product not found with this slug!')
+    throw createHttpError(404,'Product not found with this slug!')
   }
   return product
 }
@@ -61,7 +66,7 @@ export const removeProductBySlug = async (slug: string): Promise<IProduct> => {
     slug: slug,
   })
   if (!product) {
-    throw new Error('Product not found with this slug!')
+    throw createHttpError(404,'Product not found with this slug!')
   }
   return product
 }
@@ -74,7 +79,7 @@ export const newProduct = async (
   description: string,
   sold: boolean,
   shipping: string,
-  category:ICategory['_id']
+  categoryId:ICategory['_id']
 ) => {
   // Check if a product with the same name already exists
   const productExist = await Product.exists({ name })
@@ -91,7 +96,7 @@ export const newProduct = async (
     description,
     sold,
     shipping,
-    category
+    categoryId
   })
 
   await newProduct.save()
@@ -99,6 +104,13 @@ export const newProduct = async (
 
 //update a product
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
+  
+  const isProductExist = await Product.findOne({slug :req.params.slug});
+  if(!isProductExist){
+    throw  createHttpError(409, 'Product with this slug does not exists')
+  }
+
+  
   if (req.body.name) {
     //update the slug value
     req.body.slug = slugify(req.body.name)

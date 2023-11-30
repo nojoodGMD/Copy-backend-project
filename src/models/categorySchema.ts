@@ -1,13 +1,7 @@
-import { Document, Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-export interface ICategory extends Document {
-  _id: string
-  name: string
-  slug: string
-  createdAt?: string
-  updatedAt?: string
-  __v: number
-}
+import { ICategory } from '../Interfaces/categoryInterface'
+
 export const categorySchema = new Schema(
   {
     name: {

@@ -9,7 +9,7 @@ export type Product = {
   createdAt?: NativeDate
   updatedAt?: NativeDate
 }
-export type productInput = Omit<Product, ' slug'>
+export type ProductInput = Omit<Product, ' slug'>
 
 export interface Error {
   status?: number

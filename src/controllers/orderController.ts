@@ -13,10 +13,16 @@ import { createHttpError } from '../errors/createError'
 export const getAllOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order = await getOrder()
+    
+    if(order.length === 0){
+      const error = createHttpError(404, 'There are no orders yet to show.')
+      throw error
+      }
     res.send({
       message: 'all order are returned',
       payload: order,
     })
+
   } catch (error) {
     next(error)
   }
@@ -47,7 +53,12 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
       payload: order,
     })
   } catch (error) {
-    next(error)
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
   }
 }
 
@@ -60,7 +71,12 @@ export const updateSingleOrder = async (req: Request, res: Response, next: NextF
       payload: order,
     })
   } catch (error) {
-    next(error)
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
   }
 }
 
@@ -72,6 +88,11 @@ export const deleteSingleOrder = async (req: Request, res: Response, next: NextF
       message: 'Delete order',
     })
   } catch (error) {
-    next(error)
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
   }
 }

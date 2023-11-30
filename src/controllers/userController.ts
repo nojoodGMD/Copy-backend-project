@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-
-import jwt from 'jsonwebtoken'
+import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import mongoose from 'mongoose'
 
 import { createHttpError } from '../errors/createError'
@@ -107,21 +106,18 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
     }
     const decoded = jwt.verify(token, dev.app.jwtUserActivationkey)
 
-    if (!decoded || decoded instanceof jwt.TokenExpiredError) {
-    }
-
     await User.create(decoded)
 
     res.status(201).json({
-      message: 'user is registerd successfuly',
-    })
+      message: "user is registered successfully",
+    });
   } catch (error) {
-    //token expired, test it
-    if (error instanceof jwt.TokenExpiredError) {
-      next(createHttpError(401, 'your token has expired'))
+    //meshhal way
+    if (error instanceof TokenExpiredError || error instanceof JsonWebTokenError ) {
+      const errorMassege = error instanceof TokenExpiredError ? 'token is expired' : 'Invalid Token'
+      next(createHttpError(401, errorMassege))
     } else {
-      // next(error);
-      next(createHttpError(404, 'Invalid token'))
+      next(error);
     }
   }
 }
