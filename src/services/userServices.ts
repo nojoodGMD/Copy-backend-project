@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 
 import ApiError from '../errors/ApiError'
 import User from '../models/userSchema'
-import { dev } from '../config/server'
 import { handleSendEmail } from '../helper/sendEmail'
+import generateToken from '../util/generateToken'
 
 //GET-> get all users
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
@@ -69,7 +68,6 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
     //protect the password
     const hashedPassword = await bcrypt.hash(password, 10)
-    //token
     const tokenPayload = {
       name: name,
       email: email,
@@ -78,10 +76,8 @@ export const createUserService = async (req: Request, res: Response, next: NextF
       image: imagePath,
     }
 
-    //create the token
-    const token = jwt.sign(tokenPayload, dev.app.jwtUserActivationkey, {
-      expiresIn: '5m',
-    })
+  // create the token using the utility function
+ const token = generateToken(tokenPayload);
 
     //send an email -> activiate the user (token) inside the email -> click verfied
     const emailData = {
@@ -101,7 +97,7 @@ export const createUserService = async (req: Request, res: Response, next: NextF
       message: 'check your email adress to activate your account',
       token: token,
     });
-  } catch (error) { 
+  } catch (error) {
     next(error);
   }
 }
