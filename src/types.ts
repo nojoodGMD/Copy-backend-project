@@ -22,10 +22,10 @@ export type EmailDataType = {
   html: string
 }
 
-export type userType={
-  name:string,
-  email:string,
-  password:string,
-  phone:string,
-  image?:string
+export type userType = {
+  name: string
+  email: string
+  password: string
+  phone: string
+  image?: string
 }

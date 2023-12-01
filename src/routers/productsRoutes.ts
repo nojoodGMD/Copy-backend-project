@@ -9,6 +9,7 @@ import {
 } from '../controllers/productController'
 import { createProductValidation, updateProductValidation } from '../validation/productVal'
 import { runValidation } from '../validation/runValidation'
+import { uploadProduct } from '../middlewares/uploadFile'
 
 const router = Router()
 
@@ -17,7 +18,13 @@ router.get('/', getAllProducts)
 //GET: /product/:slug -> get a single product based on slug
 router.get('/:slug', getProductBySlug)
 //POST: /products -> create a new product
-router.post('/', createProductValidation, runValidation, createProduct)
+router.post(
+  '/',
+  createProductValidation,
+  runValidation,
+  uploadProduct.single('image'),
+  createProduct
+)
 // Delete: /products/:slug -> delete a product
 router.delete('/:slug', deleteProductBySlug)
 // Update: /products/:slug -> Update a product by slug
