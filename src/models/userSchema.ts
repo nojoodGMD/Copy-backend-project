@@ -1,5 +1,4 @@
-import { Schema, model, Document } from 'mongoose'
-import bcrypt from 'bcrypt'
+import { Schema, model } from 'mongoose'
 import { IUser } from '../Interfaces/userInterface'
 
 const userSchema = new Schema<IUser>(
@@ -37,7 +36,6 @@ const userSchema = new Schema<IUser>(
       required: [true, 'Please enter the password address'],
       trim: true,
       minlength: [8, 'Please enter more than 8 characters in password'],
-      set: (password: string) => bcrypt.hashSync(password, 5),
     },
     image: {
       type: String,
