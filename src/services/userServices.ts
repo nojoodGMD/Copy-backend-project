@@ -6,6 +6,7 @@ import User from '../models/userSchema'
 import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
 import generateToken from '../util/generateToken'
+import { IUser } from '../Interfaces/userInterface'
 
 //GET-> get all users
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
@@ -76,8 +77,8 @@ export const createUserService = async (req: Request, res: Response, next: NextF
       image: imagePath,
     }
 
-  // create the token using the utility function
- const token = generateToken(tokenPayload);
+    // create the token using the utility function
+    const token = generateToken(tokenPayload)
 
     //send an email -> activiate the user (token) inside the email -> click verfied
     const emailData = {
@@ -90,15 +91,14 @@ export const createUserService = async (req: Request, res: Response, next: NextF
     }
 
     //send the email
-    await handleSendEmail(emailData);
-
+    await handleSendEmail(emailData)
 
     res.status(200).json({
       message: 'check your email adress to activate your account',
       token: token,
-    });
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
 }
 
@@ -120,4 +120,22 @@ export const updateUserService = async (id: string, req: Request) => {
     throw error
   }
   return user
+}
+
+//ban a user
+export const banUserById = async (id: string) => {
+  const user = await User.findByIdAndUpdate(id, { isBanned: true })
+  if (!user) {
+    const error = createHttpError(404, 'User not found with this Id ')
+    throw error
+  }
+}
+
+//unBan a user
+export const unBanUserById = async (id: string) => {
+  const user = await User.findByIdAndUpdate(id, { isBanned: false })
+  if (!user) {
+    const error = createHttpError(404, 'User not found with this Id ')
+    throw error
+  }
 }

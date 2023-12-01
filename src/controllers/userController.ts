@@ -2,17 +2,18 @@ import { Request, Response, NextFunction } from 'express'
 import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import mongoose from 'mongoose'
 
-
 import {
+  banUserById,
   createUserService,
   deleteUserSevice,
   getAllUsersService,
   getSingleUserService,
+  unBanUserById,
   updateUserService,
 } from '../services/userServices'
 import { dev } from '../config/server'
 import User from '../models/userSchema'
-import { createHttpError } from '../errors/createError';
+import { createHttpError } from '../errors/createError'
 
 //usser for is and admin, like authController
 
@@ -99,35 +100,56 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     }
   }
 }
-//copy paste new - restart app - restart server 
+//copy paste new - restart app - restart server
 //try catch function maybe the reason for crashing
-export const activateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const activateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.body.token;
+    const token = req.body.token
 
     if (!token) {
-      throw createHttpError(404, "Please provide a valid token");
+      throw createHttpError(404, 'Please provide a valid token')
     }
-    const decoded = jwt.verify(token, dev.app.jwtUserActivationkey);
-
+    const decoded = jwt.verify(token, dev.app.jwtUserActivationkey)
 
     await User.create(decoded)
 
     res.status(201).json({
-      message: "user is registered successfully",
-    });
+      message: 'user is registered successfully',
+    })
   } catch (error) {
     //meshhal way
-    if (error instanceof TokenExpiredError || error instanceof JsonWebTokenError ) {
+    if (error instanceof TokenExpiredError || error instanceof JsonWebTokenError) {
       const errorMassege = error instanceof TokenExpiredError ? 'token is expired' : 'Invalid Token'
       next(createHttpError(401, errorMassege))
     } else {
-      next(error);
+      next(error)
     }
   }
-};
+}
+
+// ban user
+export const banUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await banUserById(req.params.id)
+    res.send({
+      message: 'user is banned successfully',
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+//unBan user 
+
+export const unBanUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await unBanUserById(req.params.id)
+    res.send({
+      message: 'user is unbanned successfully',
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 
