@@ -42,7 +42,7 @@ export const validateUpdateUser = [
   check('email')
     .trim()
     .optional()
-    .isEmpty()
+    .notEmpty()
     .withMessage('Email is required')
     .isEmail()
     .withMessage('Enter a valid email address')
