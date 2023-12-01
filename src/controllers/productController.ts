@@ -27,7 +27,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
       },
     })
   } catch (error) {
-    console.error('Error get all product:', error);
+    console.error('Error get all product:', error)
     next(error)
   }
 }
@@ -54,7 +54,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 
     res.status(201).send({ message: 'Product is created' })
   } catch (error) {
-    console.error('Error create product:', error);
+    console.error('Error create product:', error)
     next(error)
   }
 }

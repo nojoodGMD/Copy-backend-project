@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose'
 
 import { IProduct } from '../Interfaces/productInterface'
 
-
 const productSchema = new Schema(
   {
     name: {
@@ -34,7 +33,7 @@ const productSchema = new Schema(
     sold: {
       type: Number,
       trim: true,
-      default: 0
+      default: 0,
     },
 
     image: {
@@ -52,19 +51,17 @@ const productSchema = new Schema(
       required: true,
       trim: true,
       minlength: [5, 'product description must be at least 5 character long'],
-      maxlength: [300, 'product description must be at most 300 character long']
+      maxlength: [300, 'product description must be at most 300 character long'],
     },
-    //to make relation between product to the category
-    //Schema.Types.ObjectId the id from the collection of category
+    //relations between product and category
     categoryId: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
       required: true,
     },
   },
-  
+
   { timestamps: true }
 )
 
-//create the model/collections
 export const Product = model<IProduct>('Products', productSchema)

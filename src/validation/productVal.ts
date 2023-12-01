@@ -18,18 +18,15 @@ export const createProductValidation = [
     .trim()
     .notEmpty()
     .withMessage('Quantity is missing')
-    .isInt({ min: 1})
+    .isInt({ min: 1 })
     .withMessage('Qunatity must be a postive number'),
   check('description')
     .trim()
     .notEmpty()
     .withMessage('name is missing')
-    .isLength({ min: 5 , max: 300 })
+    .isLength({ min: 5, max: 300 })
     .withMessage('product description must be between 5-300 character long'),
-  check('categoryId')
-    .trim()
-    .notEmpty()
-    .withMessage('category id is missing')
+  check('categoryId').trim().notEmpty().withMessage('category id is missing'),
 ]
 
 export const updateProductValidation = [

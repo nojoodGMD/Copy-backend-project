@@ -6,6 +6,7 @@ import User from '../models/userSchema'
 import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
 import generateToken from '../util/generateToken'
+import { userType } from '../types'
 
 //GET-> get all users
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
@@ -25,6 +26,7 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
     const searchRegExp = new RegExp('.*' + search + '.*', 'i')
 
     filter = {
+      isAdmin: { $ne: true },
       $or: [
         { name: { $regex: searchRegExp } },
         { email: { $regex: searchRegExp } },
@@ -32,7 +34,12 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
       ],
     }
   }
-  const users = await User.find(filter).sort({ name: 1 }).skip(skip).limit(limit)
+  const options = {
+    password: 0,
+    __v: 0,
+  }
+
+  const users = await User.find(filter, options).sort({ name: 1 }).skip(skip).limit(limit)
   return {
     users,
     totalPage,
@@ -42,7 +49,11 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
 
 //GET-> get user by id
 export const getSingleUserService = async (id: string) => {
-  const users = await User.findOne({ _id: id })
+  const options = {
+    password: 0,
+    __v: 0,
+  }
+  const users = await User.findOne({ _id: id },options)
   if (!users) {
     const error = new ApiError(404, `User with this id:${id} does not exist.`)
     throw error
@@ -68,16 +79,18 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
     //protect the password
     const hashedPassword = await bcrypt.hash(password, 10)
-    const tokenPayload = {
+    const tokenPayload: userType = {
       name: name,
       email: email,
       password: hashedPassword,
       phone: phone,
-      image: imagePath,
+    }
+    if (imagePath) {
+      tokenPayload.image = imagePath
     }
 
-  // create the token using the utility function
- const token = generateToken(tokenPayload);
+    // create the token using the utility function
+    const token = generateToken(tokenPayload)
 
     //send an email -> activiate the user (token) inside the email -> click verfied
     const emailData = {
@@ -90,15 +103,14 @@ export const createUserService = async (req: Request, res: Response, next: NextF
     }
 
     //send the email
-    await handleSendEmail(emailData);
-
+    await handleSendEmail(emailData)
 
     res.status(200).json({
       message: 'check your email adress to activate your account',
       token: token,
-    });
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
 }
 
@@ -120,4 +132,20 @@ export const updateUserService = async (id: string, req: Request) => {
     throw error
   }
   return user
+}
+//ban user
+export const banUserById = async (id: string) => {
+  const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: true })
+  if (!user) {
+    const error = createHttpError(404, `user is not found with this id: ${id}`)
+    throw error
+  }
+}
+//unban user
+export const unbanUserById = async (id: string) => {
+  const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: false })
+  if (!user) {
+    const error = createHttpError(404, `user is not found with this id: ${id}`)
+    throw error
+  }
 }
