@@ -1,5 +1,6 @@
 import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
+
 import { IUser } from '../Interfaces/userInterface'
 
 const userSchema = new Schema<IUser>(
@@ -11,9 +12,9 @@ const userSchema = new Schema<IUser>(
       minlength: [3, 'Name must be at least 3 characters'],
       maxlength: [50, 'Name must be less than 50 characers'],
     },
-    role: {
-      type: String,
-      default: 'visitor',
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     isBanned: {
       type: Boolean,
@@ -49,12 +50,12 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: [10, 'Please enter a correct phone number length.'],
     },
-    orders:[
+    orders: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Order',
-      }
-    ]
+      },
+    ],
   },
   { timestamps: true }
 )

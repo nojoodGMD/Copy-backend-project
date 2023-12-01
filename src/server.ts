@@ -9,7 +9,6 @@ import apiErrorHandler from './middlewares/errorHandler'
 import myLogger from './middlewares/logger'
 import { dev } from './config/server'
 import { connectDB } from './config/db'
-import { createHttpError } from './errors/createError'
 
 const app: Application = express()
 const PORT: number = dev.app.port

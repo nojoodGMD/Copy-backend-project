@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import mongoose from 'mongoose'
 
 import {
   createSingleOrder,
@@ -7,22 +8,20 @@ import {
   getSingleOrder,
   updateOrder,
 } from '../services/orderServices'
-import mongoose from 'mongoose'
 import { createHttpError } from '../errors/createError'
 
 export const getAllOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order = await getOrder()
-    
-    if(order.length === 0){
+
+    if (order.length === 0) {
       const error = createHttpError(404, 'There are no orders yet to show.')
       throw error
-      }
+    }
     res.send({
       message: 'all order are returned',
       payload: order,
     })
-
   } catch (error) {
     next(error)
   }

@@ -13,7 +13,7 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
   try {
     //the service for get all the category
     const category = await getCategory(req)
-    if(category.length === 0){
+    if (category.length === 0) {
       const error = createHttpError(404, 'There are no category yet to show.')
       throw error
     }

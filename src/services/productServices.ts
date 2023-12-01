@@ -6,7 +6,6 @@ import { createHttpError } from '../errors/createError'
 import { IProduct } from '../Interfaces/productInterface'
 import { ICategory } from '../Interfaces/categoryInterface'
 
-
 //GET->get all the product services
 export const getAllProductService = async (
   page: number,
@@ -38,10 +37,17 @@ export const getAllProductService = async (
   } else if (minPrice || maxPrice) {
     filter = { $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }] }
   }
+  const options = {
+    __v: 0,
+  }
 
-  const products:IProduct[] = await Product.find(filter).sort({ price: 1 }).skip(skip).limit(limit) .populate("categoryId")
-  if(products.length == 0){
-    throw createHttpError(404,"No products with those filters were found")
+  const products: IProduct[] = await Product.find(filter, options)
+    .sort({ price: 1 })
+    .skip(skip)
+    .limit(limit)
+    .populate('categoryId')
+  if (products.length == 0) {
+    throw createHttpError(404, 'No products with those filters were found')
   }
 
   return {
@@ -53,9 +59,12 @@ export const getAllProductService = async (
 
 //get single products
 export const findProductBySlug = async (slug: string): Promise<IProduct> => {
-  const product = await Product.findOne({ slug: slug })
+  const options = {
+    __v: 0,
+  }
+  const product = await Product.findOne({ slug: slug }, options)
   if (!product) {
-    throw createHttpError(404,'Product not found with this slug!')
+    throw createHttpError(404, 'Product not found with this slug!')
   }
   return product
 }
@@ -66,7 +75,7 @@ export const removeProductBySlug = async (slug: string): Promise<IProduct> => {
     slug: slug,
   })
   if (!product) {
-    throw createHttpError(404,'Product not found with this slug!')
+    throw createHttpError(404, 'Product not found with this slug!')
   }
   return product
 }
@@ -79,7 +88,7 @@ export const newProduct = async (
   description: string,
   sold: boolean,
   shipping: string,
-  categoryId:ICategory['_id']
+  categoryId: ICategory['_id']
 ) => {
   // Check if a product with the same name already exists
   const productExist = await Product.exists({ name })
@@ -96,7 +105,7 @@ export const newProduct = async (
     description,
     sold,
     shipping,
-    categoryId
+    categoryId,
   })
 
   await newProduct.save()
@@ -104,13 +113,11 @@ export const newProduct = async (
 
 //update a product
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
-  
-  const isProductExist = await Product.findOne({slug :req.params.slug});
-  if(!isProductExist){
-    throw  createHttpError(409, 'Product with this slug does not exists')
+  const isProductExist = await Product.findOne({ slug: req.params.slug })
+  if (!isProductExist) {
+    throw createHttpError(409, 'Product with this slug does not exists')
   }
 
-  
   if (req.body.name) {
     //update the slug value
     req.body.slug = slugify(req.body.name)
