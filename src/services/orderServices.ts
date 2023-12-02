@@ -5,7 +5,6 @@ import { createHttpError } from '../errors/createError'
 import { Product } from '../models/productSchema'
 import User from '../models/userSchema'
 import { IItemes } from '../Interfaces/orderInterface'
-import { IProduct } from '../Interfaces/productInterface'
 
 export const getOrder = async () => {
   const order = await orderModel.find().populate(['userId', 'orderItems'])
@@ -40,11 +39,9 @@ export const createSingleOrder = async (req: Request) => {
   }
 
   //Get the total amount of money
-
   const productsID = orderItems.map(item=> item.product)
   const productQuantity = orderItems.map(itemQty => itemQty.quantity)
   const products = await Product.find({ _id: { $in: productsID } })
-  console.log(products)
   let totalAmount = 0
   for (let i = 0 ; i < productQuantity.length ; i++){
     totalAmount += products[i].price*productQuantity[i]
@@ -56,8 +53,20 @@ export const createSingleOrder = async (req: Request) => {
     shippingAddress,
     totalAmount,
   })
+
+  addOrderToUser(userId, order._id)
+
   await order.save()
   return order
+}
+
+export const addOrderToUser = async (userId: string, orderId: string) => {
+  const user = await User.findOne({ _id: userId })
+  if (!user) {
+    throw createHttpError(404, `Order cannot be added to this user since the user is not found with this id: ${userId}`)
+  }
+  user.orders.push(orderId)
+  await user.save()
 }
 
 export const updateOrder = async (id: string, req: Request) => {

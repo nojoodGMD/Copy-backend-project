@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 
-import ApiError from '../errors/ApiError'
 import User from '../models/userSchema'
 import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
@@ -39,7 +38,7 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
     __v: 0,
   }
 
-  const users = await User.find(filter, options).sort({ name: 1 }).skip(skip).limit(limit)
+  const users = await User.find(filter, options).populate('orders').sort({ name: 1 }).skip(skip).limit(limit)
   return {
     users,
     totalPage,
@@ -53,9 +52,9 @@ export const getSingleUserService = async (id: string) => {
     password: 0,
     __v: 0,
   }
-  const users = await User.findOne({ _id: id },options)
+  const users = await User.findOne({ _id: id },options).populate('orders')
   if (!users) {
-    const error = new ApiError(404, `User with this id:${id} does not exist.`)
+    const error = createHttpError(404, `User with this id:${id} does not exist.`)
     throw error
   }
   return users
@@ -65,7 +64,7 @@ export const getSingleUserService = async (id: string) => {
 export const isUserExistService = async (email: string) => {
   const user = await User.exists({ email: email })
   if (user) {
-    const error = new ApiError(409, 'User with this email already exists.')
+    const error = createHttpError(409, 'User with this email already exists.')
     throw error
   }
 }
@@ -118,7 +117,7 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 export const deleteUserSevice = async (id: string) => {
   const user = await User.findOneAndDelete({ _id: id })
   if (!user) {
-    const error = new ApiError(404, "User with this id doesn't exist")
+    const error = createHttpError(404, "User with this id doesn't exist")
     throw error
   }
 }
@@ -128,7 +127,7 @@ export const updateUserService = async (id: string, req: Request) => {
   const newData = req.body
   const user = await User.findOneAndUpdate({ _id: id }, newData, { new: true })
   if (!user) {
-    const error = new ApiError(404, "User with this id doesn't exist")
+    const error = createHttpError(404, "User with this id doesn't exist")
     throw error
   }
   return user
