@@ -14,5 +14,6 @@ export interface IUser extends Document {
     password: string
     image: string
     phone: string
+    isAdmin: boolean
     orders: IUserOrders[]
 }

@@ -49,12 +49,17 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: [10, 'Please enter a correct phone number length.'],
     },
-    orders:[
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+
+    orders: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Order',
-      }
-    ]
+      },
+    ],
   },
   { timestamps: true }
 )
