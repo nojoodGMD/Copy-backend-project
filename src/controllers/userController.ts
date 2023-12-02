@@ -6,8 +6,10 @@ import {
   banUserById,
   createUserService,
   deleteUserSevice,
+  forgetPasswordService,
   getAllUsersService,
   getSingleUserService,
+  resetPasswordService,
   unbanUserById,
   updateUserService,
 } from '../services/userServices'
@@ -158,5 +160,32 @@ export const unbanUser = async (req: Request, res: Response, next: NextFunction)
     } else {
       next(error)
     }
+  }
+}
+
+export const forgetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.body
+    const token = await forgetPasswordService(email)
+
+    res.status(200).json({
+      message: 'Check your email to reset your password',
+      payload: token,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { token, password } = req.body
+    await resetPasswordService(token, password)
+
+    res.status(200).json({
+      message: 'Reset password was successful',
+    })
+  } catch (error) {
+    next(error)
   }
 }
