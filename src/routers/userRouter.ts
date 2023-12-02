@@ -37,7 +37,7 @@ router.put('/:_id', validateUpdateUser, runValidation, isLoggedIn, updateUser)
 //DELETE: /users/:id -> delete the user based on the id
 router.delete('/:_id', isLoggedIn, deleteUser)
 //PUT: /user/:ban -> block the user
-router.put('/ban/:id', isLoggedIn, banUser)
+router.put('/ban/:id', isLoggedIn,isAdmin, banUser)
 //PUT: /user/:un ban -> block the user
-router.put('/unban/:id', isLoggedIn, unBanUser)
+router.put('/unban/:id', isLoggedIn,isAdmin, unBanUser)
 export default router
