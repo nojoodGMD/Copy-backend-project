@@ -89,9 +89,6 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     const { _id } = req.params
     await deleteUserSevice(_id)
 
-    //sign out the user
-    res.clearCookie('access_token')
-
     res.status(200).json({
       message: 'users is deleted successfully!',
     })
