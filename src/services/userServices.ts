@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { NextFunction, Request, Response } from 'express'
 
 import { userType } from '../types'
@@ -7,6 +8,7 @@ import generateToken from '../util/generateToken'
 import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
 import { deleteImage } from '../helper/deleteImageHelper'
+import { dev } from '../config/server'
 
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
   const count = await User.countDocuments()
@@ -146,5 +148,46 @@ export const unbanUserById = async (id: string) => {
   if (!user) {
     const error = createHttpError(404, `user is not found with this id: ${id}`)
     throw error
+  }
+}
+
+export const forgetPasswordService = async (email: string) => {
+  const user = await User.findOne({ email: email })
+
+  if (!user) {
+    throw createHttpError(404, 'User does not exist')
+  }
+
+  const token = jwt.sign({ email: email }, dev.app.jwtResetPasswordKey, {
+    expiresIn: '15m',
+  })
+  const emailData = {
+    email: email,
+    subject: 'Reset your password',
+    html: `<h1>Hello ${user.name}</h1><p>Please reset your password by clicking the following link</p><a href="http://127.0.0.1:3002/uesrs/reset-password/${token}">Reset password`,
+  }
+
+  handleSendEmail(emailData)
+
+  return token
+}
+
+export const resetPasswordService = async (token: string, password: string) => {
+  const decoded = jwt.verify(token, dev.app.jwtResetPasswordKey) as JwtPayload
+
+  if (!decoded) {
+    throw createHttpError(400, 'Token is invalid')
+  }
+
+  const hashedPassword = bcrypt.hashSync(password, 10)
+
+  const updatedUser = await User.findOneAndUpdate(
+    { email: decoded.email },
+    { $set: { password: hashedPassword } },
+    { new: true }
+  )
+
+  if (!updatedUser) {
+    throw createHttpError(400, 'Reset password was unsuccessful')
   }
 }
