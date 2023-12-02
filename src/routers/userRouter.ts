@@ -7,7 +7,7 @@ import {
   getAllUsers,
   getUserById,
   registerUser,
-  unBanUser,
+  unbanUser,
   updateUser,
 } from '../controllers/userController'
 import { uploadUser } from '../middlewares/uploadFile'
@@ -39,5 +39,5 @@ router.delete('/:_id', isLoggedIn, deleteUser)
 //PUT: /user/:ban -> block the user
 router.put('/ban/:id', isLoggedIn,isAdmin, banUser)
 //PUT: /user/:un ban -> block the user
-router.put('/unban/:id', isLoggedIn,isAdmin, unBanUser)
+router.put('/unban/:id', isLoggedIn,isAdmin, unbanUser)
 export default router

@@ -1386,3 +1386,21 @@ Method: GET, Path: /api/users/656832e78ed1485bd3b4c730, Date: 12/1/2023, Time: 8
 Method: GET, Path: /api/products, Date: 12/1/2023, Time: 8:32:37 PM
 Method: GET, Path: /api/products/lenovo, Date: 12/1/2023, Time: 8:32:49 PM
 
+Method: GET, Path: /api/users, Date: 12/2/2023, Time: 8:14:15 PM
+Method: POST, Path: /api/auth/login, Date: 12/2/2023, Time: 8:15:23 PM
+Method: POST, Path: /api/auth/login, Date: 12/2/2023, Time: 8:15:47 PM
+Method: POST, Path: /api/auth/logout, Date: 12/2/2023, Time: 8:15:57 PM
+Method: POST, Path: /api/auth/login, Date: 12/2/2023, Time: 8:16:07 PM
+Method: POST, Path: /api/auth/login, Date: 12/2/2023, Time: 8:16:11 PM
+Method: GET, Path: /api/users, Date: 12/2/2023, Time: 8:16:19 PM
+Method: GET, Path: /api/users, Date: 12/2/2023, Time: 8:16:46 PM
+Method: GET, Path: /api/products, Date: 12/2/2023, Time: 8:17:06 PM
+Method: DELETE, Path: /api/products/samsung-1800, Date: 12/2/2023, Time: 8:17:25 PM
+Method: GET, Path: /api/products, Date: 12/2/2023, Time: 8:17:44 PM
+Method: DELETE, Path: /api/products/gameboy-xr, Date: 12/2/2023, Time: 8:18:00 PM
+Method: GET, Path: /api/products, Date: 12/2/2023, Time: 8:18:06 PM
+Method: GET, Path: /api/products, Date: 12/2/2023, Time: 8:19:29 PM
+Method: DELETE, Path: /api/products/gameboy-xr, Date: 12/2/2023, Time: 8:19:36 PM
+Method: POST, Path: /api/auth/login, Date: 12/2/2023, Time: 8:20:02 PM
+Method: GET, Path: /api/products, Date: 12/2/2023, Time: 8:20:06 PM
+Method: GET, Path: /api/orders, Date: 12/2/2023, Time: 8:20:27 PM

@@ -4,9 +4,8 @@ import { NextFunction, Request, Response } from 'express'
 import { userType } from '../types'
 import User from '../models/userSchema'
 import generateToken from '../util/generateToken'
-import { IUser } from '../Interfaces/userInterface'
 import { handleSendEmail } from '../helper/sendEmail'
-import { createHttpError } from '../errors/createError
+import { createHttpError } from '../errors/createError'
 import { deleteImage } from '../helper/deleteImageHelper'
 
 //GET-> get all users

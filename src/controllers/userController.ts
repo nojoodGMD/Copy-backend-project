@@ -4,11 +4,11 @@ import mongoose from 'mongoose'
 
 import {
   banUserById,
-  createUserService,
+  createUserService, 
   deleteUserSevice,
   getAllUsersService,
   getSingleUserService,
-  unBanUserById,
+  unbanUserById,
   updateUserService,
 } from '../services/userServices'
 import { dev } from '../config/server'
@@ -127,30 +127,30 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
   }
 }
 
-// ban user
-export const banUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = await banUserById(req.params.id)
-    res.send({
-      message: 'user is banned successfully',
-    })
-  } catch (error) {
-    next(error)
-  }
-}
+// // ban user
+// export const banUser = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const user = await banUserById(req.params.id)
+//     res.send({
+//       message: 'user is banned successfully',
+//     })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
-//unBan user 
+// //unBan user 
 
-export const unBanUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = await unBanUserById(req.params.id)
-    res.send({
-      message: 'user is unbanned successfully',
-    })
-  } catch (error) {
-    next(error)
-  }
-}
+// export const unBanUser = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const user = await unbanUserById(req.params.id)
+//     res.send({
+//       message: 'user is unbanned successfully',
+//     })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 
 

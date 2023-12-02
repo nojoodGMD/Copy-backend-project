@@ -48,10 +48,6 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: [10, 'Please enter a correct phone number length.'],
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
     orders: [
       {
         type: Schema.Types.ObjectId,
