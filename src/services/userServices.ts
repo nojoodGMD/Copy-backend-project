@@ -86,7 +86,6 @@ export const createUserService = async (req: Request, res: Response, next: NextF
       email: email,
       password: hashedPassword,
       phone: phone,
-      image: imagePath,
     }
     if (imagePath) {
       tokenPayload.image = imagePath
