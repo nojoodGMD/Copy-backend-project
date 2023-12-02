@@ -53,7 +53,6 @@ const productSchema = new Schema(
       minlength: [5, 'product description must be at least 5 character long'],
       maxlength: [300, 'product description must be at most 300 character long'],
     },
-    //relations between product and category
     categoryId: {
       type: Schema.Types.ObjectId,
       ref: 'Category',

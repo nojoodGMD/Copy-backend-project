@@ -1,4 +1,5 @@
 import { Router } from 'express'
+
 import { handleLogin, handleLogout } from '../controllers/authControllers'
 import { isLoggedIn, isLoggedOut } from '../middlewares/auth'
 

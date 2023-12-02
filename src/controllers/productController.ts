@@ -7,18 +7,18 @@ import {
   removeProductBySlug,
   updateProductServices,
 } from '../services/productServices'
+import { createHttpError } from '../errors/createError'
 
-//return all products
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || 3
     const minPrice = Number(req.query.minPrice) || 0
-    const maxPrice = Number(req.query.maxPrice) || 200000
+    const maxPrice = Number(req.query.maxPrice) || 2000000
 
     const result = await getAllProductService(page, limit, minPrice, maxPrice, req)
 
-    res.send({
+    res.status(200).send({
       message: 'Get all products',
       payload: {
         products: result.products,
@@ -27,25 +27,22 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
       },
     })
   } catch (error) {
-    console.error('Error get all product:', error)
     next(error)
   }
 }
 
-//return a single product
 export const getProductBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const product = await findProductBySlug(req.params.slug)
     if (!product) {
-      throw new Error('Product not found with this slug!')
+      throw createHttpError(404, 'Product not found with this slug!')
     }
-    res.send({ message: 'Get a single product', payload: product })
+    res.status(200).send({ message: 'Get a single product', payload: product })
   } catch (error) {
     next(error)
   }
 }
 
-//Crete a product
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, price, quantity, description, sold, shipping, categoryId } = req.body
@@ -54,27 +51,24 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 
     res.status(201).send({ message: 'Product is created' })
   } catch (error) {
-    console.error('Error create product:', error)
     next(error)
   }
 }
 
-//Delete a product
 export const deleteProductBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const product = await removeProductBySlug(req.params.slug)
-    res.send({ message: 'Deleted a single product', payload: product })
+    res.status(200).send({ message: 'Deleted a single product', payload: product })
   } catch (error) {
     next(error)
   }
 }
 
-// Update a product
 export const updateProductBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
     const product = await updateProductServices(req, slug)
-    res.json({
+    res.status(200).json({
       message: ' product is updated',
       payload: product,
     })

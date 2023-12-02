@@ -1,14 +1,14 @@
 import JWT, { JwtPayload } from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
+
 import { createHttpError } from '../errors/createError'
 import { dev } from '../config/server'
 import User from '../models/userSchema'
 
 interface customerRequest extends Request {
-  userId?: string // optional
+  userId?: string
 }
 
-//isLogged in middleware
 export const isLoggedIn = async (req: customerRequest, res: Response, next: NextFunction) => {
   try {
     const accessToken = req.cookies.access_token
@@ -16,9 +16,7 @@ export const isLoggedIn = async (req: customerRequest, res: Response, next: Next
       throw createHttpError(401, ' please login again')
     }
 
-    //check if the token is valid
     const decoded = (await JWT.verify(accessToken, dev.app.ACCESS_TOKEN_SECRET)) as JwtPayload
-    console.log(decoded)
     if (!decoded) {
       throw createHttpError(401, 'Access token is not valid')
     }
@@ -29,7 +27,6 @@ export const isLoggedIn = async (req: customerRequest, res: Response, next: Next
   }
 }
 
-//isLogged out middleware
 export const isLoggedOut = async (req: customerRequest, res: Response, next: NextFunction) => {
   try {
     const accessToken = req.cookies.access_token
@@ -43,7 +40,6 @@ export const isLoggedOut = async (req: customerRequest, res: Response, next: Nex
   }
 }
 
-// isAdmin middleware
 export const isAdmin = async (req: customerRequest, res: Response, next: NextFunction) => {
   try {
     const user = await User.findById(req.userId)

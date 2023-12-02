@@ -15,7 +15,6 @@ export interface Error {
   status?: number
   message?: string
 }
-///type because we are using typescript
 export type EmailDataType = {
   email: string
   subject: string

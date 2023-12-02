@@ -27,17 +27,17 @@ router.post(
   validateCreateUser,
   runValidation,
   uploadUser.single('image'),
-  isLoggedOut, // check if the user is already logged in or not if so then throw an error
+  isLoggedOut,
   registerUser
 )
 // POST: /users/register -> register a new user successfly
-router.post('/activate', activateUser)
+router.post('/activate', isLoggedOut, activateUser)
 //PUT: /user/:id -> update the user data based on the id
 router.put('/:_id', validateUpdateUser, runValidation, isLoggedIn, updateUser)
 //DELETE: /users/:id -> delete the user based on the id
 router.delete('/:_id', isLoggedIn, deleteUser)
-//PUT: /user/:ban -> block the user
-router.put('/ban/:id', isLoggedIn,isAdmin, banUser)
-//PUT: /user/:un ban -> block the user
-router.put('/unban/:id', isLoggedIn,isAdmin, unbanUser)
+//PUT: /user/:ban -> ban the user
+router.put('/ban/:id', isLoggedIn, isAdmin, banUser)
+//PUT: /user/:unban -> unban the user
+router.put('/unban/:id', isLoggedIn, isAdmin, unbanUser)
 export default router

@@ -1,4 +1,3 @@
-//order validator
 import { check } from 'express-validator'
 
 export const validateCreateOrder = [

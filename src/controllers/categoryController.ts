@@ -11,7 +11,6 @@ import { createHttpError } from '../errors/createError'
 
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    //the service for get all the category
     const category = await getCategory(req)
     if (category.length === 0) {
       const error = createHttpError(404, 'There are no category yet to show.')
@@ -29,7 +28,6 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body
-    //services for create single product
     const category = await createSingleCategory(name)
     res.status(201).json({
       message: 'single category created.',
@@ -43,7 +41,6 @@ export const createCategory = async (req: Request, res: Response, next: NextFunc
 export const deleteSingleCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-    //service for delete single category
     await deleteCategory(slug)
     res.status(200).json({
       message: `Category with value ${slug} is deleted`,
@@ -55,7 +52,6 @@ export const deleteSingleCategory = async (req: Request, res: Response, next: Ne
 export const getSingleCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-    //services
     const category = await getCategoryBySlug(slug)
     res.status(200).json({
       message: 'Single category returned',
@@ -69,7 +65,6 @@ export const getSingleCategory = async (req: Request, res: Response, next: NextF
 export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-    //services
     const category = await updateSingleCategory(slug, req)
     res.status(200).json({
       message: 'Single category updated',

@@ -1,6 +1,6 @@
 import express, { Application } from 'express'
-import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
+import morgan from 'morgan'
 
 import usersRouter from './routers/userRouter'
 import authRouter from './routers/authRouters'
@@ -24,7 +24,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/orders', ordersRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/categories', categoriesRouter)
-app.use('/api/auth' , authRouter)
+app.use('/api/auth', authRouter)
 
 app.use(apiErrorHandler)
 

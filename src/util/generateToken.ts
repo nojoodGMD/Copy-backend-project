@@ -1,4 +1,3 @@
-// utils/generateToken.ts
 import jwt from 'jsonwebtoken'
 
 const generateToken = (payload: any) => {

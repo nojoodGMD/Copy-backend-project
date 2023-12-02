@@ -7,7 +7,6 @@ import { IProduct } from '../Interfaces/productInterface'
 import { ICategory } from '../Interfaces/categoryInterface'
 import { deleteImage } from '../helper/deleteImageHelper'
 
-//GET->get all the product services
 export const getAllProductService = async (
   page: number,
   limit: number,
@@ -58,7 +57,6 @@ export const getAllProductService = async (
   }
 }
 
-//get single products
 export const findProductBySlug = async (slug: string): Promise<IProduct> => {
   const options = {
     __v: 0,
@@ -70,7 +68,6 @@ export const findProductBySlug = async (slug: string): Promise<IProduct> => {
   return product
 }
 
-//delete a single product
 export const removeProductBySlug = async (slug: string): Promise<IProduct> => {
   const product = await Product.findOneAndDelete({
     slug: slug,
@@ -84,7 +81,6 @@ export const removeProductBySlug = async (slug: string): Promise<IProduct> => {
   return product
 }
 
-//create a product
 export const newProduct = async (
   name: string,
   price: number,
@@ -94,7 +90,6 @@ export const newProduct = async (
   shipping: string,
   categoryId: ICategory['_id']
 ) => {
-  // Check if a product with the same name already exists
   const productExist = await Product.exists({ name })
 
   if (productExist) {
@@ -115,7 +110,6 @@ export const newProduct = async (
   await newProduct.save()
 }
 
-//update a product
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
   const isProductExist = await Product.findOne({ slug: req.params.slug })
   if (!isProductExist) {
@@ -123,19 +117,11 @@ export const updateProductServices = async (req: Request, slug: string): Promise
   }
 
   if (req.body.name) {
-    //update the slug value
     req.body.slug = slugify(req.body.name)
   }
 
-  // Always update the slug based on the name
-  const updatedSlug = slugify(req.body.name)
+  const updateData = req.body
 
-  const updateData = {
-    ...req.body,
-    slug: updatedSlug,
-  }
-
-  //in this function i base 2 things 1- is id 2- is udated data and i will get this data from req.body
   const product = await Product.findOneAndUpdate({ slug }, updateData, {
     new: true,
   })

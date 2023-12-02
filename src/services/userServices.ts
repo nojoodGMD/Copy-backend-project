@@ -8,7 +8,6 @@ import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
 import { deleteImage } from '../helper/deleteImageHelper'
 
-//GET-> get all users
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
   const count = await User.countDocuments()
   if (count <= 0) {
@@ -26,7 +25,6 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
     const searchRegExp = new RegExp('.*' + search + '.*', 'i')
 
     filter = {
-      isAdmin: { $ne: true },
       $or: [
         { name: { $regex: searchRegExp } },
         { email: { $regex: searchRegExp } },
@@ -39,7 +37,11 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
     __v: 0,
   }
 
-  const users = await User.find(filter, options).populate('orders').sort({ name: 1 }).skip(skip).limit(limit)
+  const users = await User.find(filter, options)
+    .populate('orders')
+    .sort({ name: 1 })
+    .skip(skip)
+    .limit(limit)
   return {
     users,
     totalPage,
@@ -47,14 +49,13 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
   }
 }
 
-//GET-> get user by id
 export const getSingleUserService = async (id: string) => {
   const options = {
     password: 0,
     __v: 0,
   }
 
-  const users = await User.findOne({ _id: id },options).populate('orders')
+  const users = await User.findOne({ _id: id }, options).populate('orders')
 
   if (!users) {
     const error = createHttpError(404, `User with this id:${id} does not exist.`)
@@ -63,7 +64,6 @@ export const getSingleUserService = async (id: string) => {
   return users
 }
 
-// Check if user already exists
 export const isUserExistService = async (email: string) => {
   const user = await User.exists({ email: email })
   if (user) {
@@ -72,15 +72,14 @@ export const isUserExistService = async (email: string) => {
   }
 }
 
-//create a new user
 export const createUserService = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, email, password, phone } = req.body
     await isUserExistService(email)
     const imagePath = req.file?.path
 
-    //protect the password
     const hashedPassword = await bcrypt.hash(password, 10)
+
     const tokenPayload: userType = {
       name: name,
       email: email,
@@ -91,7 +90,6 @@ export const createUserService = async (req: Request, res: Response, next: NextF
       tokenPayload.image = imagePath
     }
 
-    // create the token using the utility function
     const token = generateToken(tokenPayload)
 
     //send an email -> activiate the user (token) inside the email -> click verfied
@@ -104,7 +102,6 @@ export const createUserService = async (req: Request, res: Response, next: NextF
     <a href= "http://localhost:8080/users/activate/${token}"> clicking on this link </a> </p>`,
     }
 
-    //send the email
     await handleSendEmail(emailData)
 
     res.status(200).json({
@@ -116,7 +113,6 @@ export const createUserService = async (req: Request, res: Response, next: NextF
   }
 }
 
-//delete user
 export const deleteUserSevice = async (id: string) => {
   const user = await User.findByIdAndDelete({ _id: id })
   if (user && user.image) {
@@ -128,7 +124,6 @@ export const deleteUserSevice = async (id: string) => {
   }
 }
 
-//update user
 export const updateUserService = async (id: string, req: Request) => {
   const newData = req.body
   const user = await User.findOneAndUpdate({ _id: id }, newData, { new: true })
@@ -139,7 +134,6 @@ export const updateUserService = async (id: string, req: Request) => {
   return user
 }
 
-//ban user
 export const banUserById = async (id: string) => {
   const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: true })
   if (!user) {
@@ -147,7 +141,6 @@ export const banUserById = async (id: string) => {
     throw error
   }
 }
-//unban user
 export const unbanUserById = async (id: string) => {
   const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: false })
   if (!user) {

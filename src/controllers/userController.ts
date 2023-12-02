@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 
 import {
   banUserById,
-  createUserService, 
+  createUserService,
   deleteUserSevice,
   getAllUsersService,
   getSingleUserService,
@@ -14,8 +14,6 @@ import {
 import { dev } from '../config/server'
 import User from '../models/userSchema'
 import { createHttpError } from '../errors/createError'
-
-//usser for is and admin, like authController
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -88,6 +86,10 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
   try {
     const { _id } = req.params
     await deleteUserSevice(_id)
+
+    //sign out the user
+    res.clearCookie('access_token')
+
     res.status(200).json({
       message: 'users is deleted successfully!',
     })
@@ -100,8 +102,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     }
   }
 }
-//copy paste new - restart app - restart server
-//try catch function maybe the reason for crashing
+
 export const activateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.body.token
@@ -117,7 +118,6 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
       message: 'user is registered successfully',
     })
   } catch (error) {
-    //meshhal way
     if (error instanceof TokenExpiredError || error instanceof JsonWebTokenError) {
       const errorMassege = error instanceof TokenExpiredError ? 'token is expired' : 'Invalid Token'
       next(createHttpError(401, errorMassege))
@@ -127,40 +127,11 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
   }
 }
 
-// // ban user
-// export const banUser = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const user = await banUserById(req.params.id)
-//     res.send({
-//       message: 'user is banned successfully',
-//     })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// //unBan user 
-
-// export const unBanUser = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const user = await unbanUserById(req.params.id)
-//     res.send({
-//       message: 'user is unbanned successfully',
-//     })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-
-
-//!ban user
 export const banUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { _id } = req.params
-    //services
-    await banUserById(_id)
-    res.json({
+    const { id } = req.params
+    await banUserById(id)
+    res.status(200).json({
       message: 'banned the user ',
     })
   } catch (error) {
@@ -173,13 +144,11 @@ export const banUser = async (req: Request, res: Response, next: NextFunction) =
   }
 }
 
-//!unban user
 export const unbanUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { _id } = req.params
-    //services
-    await unbanUserById(_id)
-    res.json({
+    const { id } = req.params
+    await unbanUserById(id)
+    res.status(200).json({
       message: 'unbanned the user ',
     })
   } catch (error) {

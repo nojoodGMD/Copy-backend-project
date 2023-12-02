@@ -39,12 +39,12 @@ export const createSingleOrder = async (req: Request) => {
   }
 
   //Get the total amount of money
-  const productsID = orderItems.map(item=> item.product)
-  const productQuantity = orderItems.map(itemQty => itemQty.quantity)
+  const productsID = orderItems.map((item) => item.product)
+  const productQuantity = orderItems.map((itemQty) => itemQty.quantity)
   const products = await Product.find({ _id: { $in: productsID } })
   let totalAmount = 0
-  for (let i = 0 ; i < productQuantity.length ; i++){
-    totalAmount += products[i].price*productQuantity[i]
+  for (let i = 0; i < productQuantity.length; i++) {
+    totalAmount += products[i].price * productQuantity[i]
   }
 
   const order = new orderModel({
@@ -63,7 +63,10 @@ export const createSingleOrder = async (req: Request) => {
 export const addOrderToUser = async (userId: string, orderId: string) => {
   const user = await User.findOne({ _id: userId })
   if (!user) {
-    throw createHttpError(404, `Order cannot be added to this user since the user is not found with this id: ${userId}`)
+    throw createHttpError(
+      404,
+      `Order cannot be added to this user since the user is not found with this id: ${userId}`
+    )
   }
   user.orders.push(orderId)
   await user.save()
