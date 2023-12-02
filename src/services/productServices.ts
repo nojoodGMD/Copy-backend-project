@@ -5,6 +5,7 @@ import { Product } from '../models/productSchema'
 import { createHttpError } from '../errors/createError'
 import { IProduct } from '../Interfaces/productInterface'
 import { ICategory } from '../Interfaces/categoryInterface'
+import { deleteImage } from '../helper/deleteImageHelper'
 
 //GET->get all the product services
 export const getAllProductService = async (
@@ -74,6 +75,9 @@ export const removeProductBySlug = async (slug: string): Promise<IProduct> => {
   const product = await Product.findOneAndDelete({
     slug: slug,
   })
+  if (product && product.image) {
+    await deleteImage(product.image)
+  }
   if (!product) {
     throw createHttpError(404, 'Product not found with this slug!')
   }

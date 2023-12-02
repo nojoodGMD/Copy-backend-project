@@ -6,6 +6,7 @@ import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
 import generateToken from '../util/generateToken'
 import { userType } from '../types'
+import { deleteImage } from '../helper/deleteImageHelper'
 
 //GET-> get all users
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
@@ -52,7 +53,9 @@ export const getSingleUserService = async (id: string) => {
     password: 0,
     __v: 0,
   }
+
   const users = await User.findOne({ _id: id },options).populate('orders')
+
   if (!users) {
     const error = createHttpError(404, `User with this id:${id} does not exist.`)
     throw error
@@ -115,7 +118,10 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
 //delete user
 export const deleteUserSevice = async (id: string) => {
-  const user = await User.findOneAndDelete({ _id: id })
+  const user = await User.findByIdAndDelete({ _id: id })
+  if (user && user.image) {
+    await deleteImage(user.image)
+  }
   if (!user) {
     const error = createHttpError(404, "User with this id doesn't exist")
     throw error
