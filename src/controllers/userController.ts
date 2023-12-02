@@ -153,3 +153,41 @@ export const unBanUser = async (req: Request, res: Response, next: NextFunction)
 }
 
 
+
+//!ban user
+export const banUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { _id } = req.params
+    //services
+    await banUserById(_id)
+    res.json({
+      message: 'banned the user ',
+    })
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
+  }
+}
+
+//!unban user
+export const unbanUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { _id } = req.params
+    //services
+    await unbanUserById(_id)
+    res.json({
+      message: 'unbanned the user ',
+    })
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
+      next(error)
+    }
+  }
+}

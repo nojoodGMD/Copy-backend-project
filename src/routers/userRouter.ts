@@ -32,15 +32,12 @@ router.post(
 )
 // POST: /users/register -> register a new user successfly
 router.post('/activate', activateUser)
-
 //PUT: /user/:id -> update the user data based on the id
 router.put('/:_id', validateUpdateUser, runValidation, isLoggedIn, updateUser)
 //DELETE: /users/:id -> delete the user based on the id
 router.delete('/:_id', isLoggedIn, deleteUser)
-
 //PUT: /user/:ban -> block the user
 router.put('/ban/:id', isLoggedIn, banUser)
 //PUT: /user/:un ban -> block the user
 router.put('/unban/:id', isLoggedIn, unBanUser)
-
 export default router

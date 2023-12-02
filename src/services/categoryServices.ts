@@ -13,7 +13,6 @@ export const getCategory = async (req: Request) => {
   } else {
     const filterProductByCategory = { name: { $eq: categories } }
     const category = await categoryModel.find(filterProductByCategory)
-    console.log('inside else')
     return category
   }
 }

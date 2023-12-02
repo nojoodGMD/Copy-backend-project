@@ -15,10 +15,17 @@ export interface Error {
   status?: number
   message?: string
 }
-///type because we are using typescriot 
+///type because we are using typescript
 export type EmailDataType = {
-  email:string;
-  subject: string;
-  html: string;
+  email: string
+  subject: string
+  html: string
 }
 
+export type userType = {
+  name: string
+  email: string
+  password: string
+  phone: string
+  image?: string
+}

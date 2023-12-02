@@ -1,12 +1,13 @@
-import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
+import { NextFunction, Request, Response } from 'express'
 
-import ApiError from '../errors/ApiError'
+import { userType } from '../types'
 import User from '../models/userSchema'
-import { handleSendEmail } from '../helper/sendEmail'
-import { createHttpError } from '../errors/createError'
 import generateToken from '../util/generateToken'
 import { IUser } from '../Interfaces/userInterface'
+import { handleSendEmail } from '../helper/sendEmail'
+import { createHttpError } from '../errors/createError
+import { deleteImage } from '../helper/deleteImageHelper'
 
 //GET-> get all users
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
@@ -26,6 +27,7 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
     const searchRegExp = new RegExp('.*' + search + '.*', 'i')
 
     filter = {
+      isAdmin: { $ne: true },
       $or: [
         { name: { $regex: searchRegExp } },
         { email: { $regex: searchRegExp } },
@@ -33,7 +35,12 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
       ],
     }
   }
-  const users = await User.find(filter).sort({ name: 1 }).skip(skip).limit(limit)
+  const options = {
+    password: 0,
+    __v: 0,
+  }
+
+  const users = await User.find(filter, options).populate('orders').sort({ name: 1 }).skip(skip).limit(limit)
   return {
     users,
     totalPage,
@@ -43,9 +50,15 @@ export const getAllUsersService = async (page: number, limit: number, req: Reque
 
 //GET-> get user by id
 export const getSingleUserService = async (id: string) => {
-  const users = await User.findOne({ _id: id })
+  const options = {
+    password: 0,
+    __v: 0,
+  }
+
+  const users = await User.findOne({ _id: id },options).populate('orders')
+
   if (!users) {
-    const error = new ApiError(404, `User with this id:${id} does not exist.`)
+    const error = createHttpError(404, `User with this id:${id} does not exist.`)
     throw error
   }
   return users
@@ -55,7 +68,7 @@ export const getSingleUserService = async (id: string) => {
 export const isUserExistService = async (email: string) => {
   const user = await User.exists({ email: email })
   if (user) {
-    const error = new ApiError(409, 'User with this email already exists.')
+    const error = createHttpError(409, 'User with this email already exists.')
     throw error
   }
 }
@@ -69,12 +82,14 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
     //protect the password
     const hashedPassword = await bcrypt.hash(password, 10)
-    const tokenPayload = {
+    const tokenPayload: userType = {
       name: name,
       email: email,
       password: hashedPassword,
       phone: phone,
-      image: imagePath,
+    }
+    if (imagePath) {
+      tokenPayload.image = imagePath
     }
 
     // create the token using the utility function
@@ -104,9 +119,12 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
 //delete user
 export const deleteUserSevice = async (id: string) => {
-  const user = await User.findOneAndDelete({ _id: id })
+  const user = await User.findByIdAndDelete({ _id: id })
+  if (user && user.image) {
+    await deleteImage(user.image)
+  }
   if (!user) {
-    const error = new ApiError(404, "User with this id doesn't exist")
+    const error = createHttpError(404, "User with this id doesn't exist")
     throw error
   }
 }
@@ -116,26 +134,25 @@ export const updateUserService = async (id: string, req: Request) => {
   const newData = req.body
   const user = await User.findOneAndUpdate({ _id: id }, newData, { new: true })
   if (!user) {
-    const error = new ApiError(404, "User with this id doesn't exist")
+    const error = createHttpError(404, "User with this id doesn't exist")
     throw error
   }
   return user
 }
 
-//ban a user
+//ban user
 export const banUserById = async (id: string) => {
-  const user = await User.findByIdAndUpdate(id, { isBanned: true })
+  const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: true })
   if (!user) {
-    const error = createHttpError(404, 'User not found with this Id ')
+    const error = createHttpError(404, `user is not found with this id: ${id}`)
     throw error
   }
 }
-
-//unBan a user
-export const unBanUserById = async (id: string) => {
-  const user = await User.findByIdAndUpdate(id, { isBanned: false })
+//unban user
+export const unbanUserById = async (id: string) => {
+  const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: false })
   if (!user) {
-    const error = createHttpError(404, 'User not found with this Id ')
+    const error = createHttpError(404, `user is not found with this id: ${id}`)
     throw error
   }
 }

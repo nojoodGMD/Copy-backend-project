@@ -1,19 +1,14 @@
-import { Document} from 'mongoose'
+import { Document } from 'mongoose'
 
-import { IOrder } from "./orderInterface"
-
-export interface IUserOrders extends Document {
-    orderId: IOrder['_id']
-  }
+import { IOrder } from './orderInterface'
 
 export interface IUser extends Document {
-    name: string
-    role: string
-    isBanned: boolean
-    email: string
-    password: string
-    image: string
-    phone: string
-    isAdmin: boolean
-    orders: IUserOrders[]
+  name: string
+  isAdmin: boolean
+  isBanned: boolean
+  email: string
+  password: string
+  image: string
+  phone: string
+  orders: IOrder['_id'][]
 }
