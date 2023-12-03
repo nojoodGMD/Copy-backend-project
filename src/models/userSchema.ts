@@ -40,7 +40,7 @@ const userSchema = new Schema<IUser>(
     },
     image: {
       type: String,
-      default: './public/img/no-profile-img-default.webp',
+      default: './public/images/users/no-profile-img-default.webp',
     },
     phone: {
       type: String,
