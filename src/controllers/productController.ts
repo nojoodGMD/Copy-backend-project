@@ -49,7 +49,10 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 
     const newItem = await newProduct(name, price, quantity, description, sold, shipping, categoryId)
 
-    res.status(201).send({ message: 'Product is created' })
+    res.status(201).send({ 
+      message: 'Product is created',
+      newItem
+    })
   } catch (error) {
     next(error)
   }

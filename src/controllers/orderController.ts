@@ -56,6 +56,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
       const error = createHttpError(400, `Id format is not valid `)
       next(error)
     } else {
+      console.error(error)
       next(error)
     }
   }

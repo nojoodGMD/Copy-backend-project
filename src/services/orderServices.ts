@@ -40,8 +40,16 @@ export const createSingleOrder = async (req: Request) => {
 
   //Get the total amount of money
   const productsID = orderItems.map((item) => item.product)
-  const productQuantity = orderItems.map((itemQty) => itemQty.quantity)
   const products = await Product.find({ _id: { $in: productsID } })
+  const productQuantity = orderItems.map((itemQty) => itemQty.quantity)
+  const numOfProducts = productsID.length;
+  //check if all product exists
+  if (numOfProducts!== products.length) {
+    const availbeProducts = products.filter((product)=>!productsID.includes(product._id))
+    const availbeProductsNames = availbeProducts.map((product) => product.name)
+    throw createHttpError(404,`products with names: ${availbeProductsNames} are the one availble, please update your order by removing other unavailble products.`)
+  }
+
   let totalAmount = 0
   for (let i = 0; i < productQuantity.length; i++) {
     totalAmount += products[i].price * productQuantity[i]

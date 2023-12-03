@@ -35,7 +35,7 @@ export const getAllProductService = async (
       $or: [{ name: { $regex: searchRegExp } }, { description: { $regex: searchRegExp } }],
     }
   } else if (minPrice || maxPrice) {
-    filter = { $and: [{ price: { $gt: minPrice } }, { price: { $lt: maxPrice } }] }
+    filter = { $and: [{ price: { $gte: minPrice } }, { price: { $lte: maxPrice } }] }
   }
   const options = {
     __v: 0,
@@ -108,6 +108,7 @@ export const newProduct = async (
   })
 
   await newProduct.save()
+  return newProduct;
 }
 
 export const updateProductServices = async (req: Request, slug: string): Promise<IProduct> => {
