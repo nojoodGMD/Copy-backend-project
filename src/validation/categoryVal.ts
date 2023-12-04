@@ -11,7 +11,6 @@ export const validateCreateCategory = [
 
 export const validateUpdateCategory = [
   check('name')
-    .optional()
     .trim()
     .notEmpty()
     .withMessage('Category Name is required')

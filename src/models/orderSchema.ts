@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-import { IOrder } from '../Interfaces/orderInterface'
+import { IOrder } from '../interface/orderInterface'
 
 const orderSchema = new Schema<IOrder>(
   {

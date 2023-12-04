@@ -3,9 +3,10 @@ import { Request } from 'express'
 
 import { Product } from '../models/productSchema'
 import { createHttpError } from '../errors/createError'
-import { IProduct } from '../Interfaces/productInterface'
-import { ICategory } from '../Interfaces/categoryInterface'
 import { deleteImage } from '../helper/deleteImageHelper'
+import { IProduct } from '../interface/productInterface'
+import { ICategory } from '../interface/categoryInterface'
+
 
 export const getAllProductService = async (
   page: number,
@@ -81,7 +82,7 @@ export const removeProductBySlug = async (slug: string): Promise<IProduct> => {
   return product
 }
 
-export const newProduct = async (
+export const createNewProductService = async (
   name: string,
   price: number,
   quantity: number,
@@ -122,6 +123,8 @@ export const updateProductServices = async (req: Request, slug: string): Promise
   }
 
   const updateData = req.body
+
+  //if update image then remove thre previous
 
   const product = await Product.findOneAndUpdate({ slug }, updateData, {
     new: true,

@@ -1,5 +1,4 @@
 import { Document } from 'mongoose'
-
 import { ICategory } from './categoryInterface'
 
 export interface IProduct extends Document {

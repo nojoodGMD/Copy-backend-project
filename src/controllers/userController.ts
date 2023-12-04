@@ -23,6 +23,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
     const limit = Number(req.query.limit) || 3
 
     const result = await getAllUsersService(page, limit, req)
+
     res.status(200).json({
       message: 'All users are fetched successfully!',
       payload: {
@@ -40,6 +41,7 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
   try {
     const { _id } = req.params
     const user = await getSingleUserService(_id)
+
     res.status(200).json({
       message: 'users is returned successfully!',
       payload: user,
@@ -57,6 +59,7 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newUser = await createUserService(req, res, next)
+
     res.status(201).json({
       message: 'user is registered successfully',
       payload: newUser,
@@ -70,6 +73,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
   try {
     const { _id } = req.params
     const user = await updateUserService(_id, req)
+    
     res.status(200).json({
       message: 'users is updated successfully!',
       payload: user,

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 
 import {
   findProductBySlug,
-  newProduct,
+  createNewProductService,
   getAllProductService,
   removeProductBySlug,
   updateProductServices,
@@ -37,6 +37,7 @@ export const getProductBySlug = async (req: Request, res: Response, next: NextFu
     if (!product) {
       throw createHttpError(404, 'Product not found with this slug!')
     }
+    
     res.status(200).send({ message: 'Get a single product', payload: product })
   } catch (error) {
     next(error)
@@ -47,7 +48,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
   try {
     const { name, price, quantity, description, sold, shipping, categoryId } = req.body
 
-    const newItem = await newProduct(name, price, quantity, description, sold, shipping, categoryId)
+    const newItem = await createNewProductService(name, price, quantity, description, sold, shipping, categoryId)
 
     res.status(201).send({ 
       message: 'Product is created',
@@ -61,6 +62,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 export const deleteProductBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const product = await removeProductBySlug(req.params.slug)
+
     res.status(200).send({ message: 'Deleted a single product', payload: product })
   } catch (error) {
     next(error)
@@ -71,6 +73,7 @@ export const updateProductBySlug = async (req: Request, res: Response, next: Nex
   try {
     const { slug } = req.params
     const product = await updateProductServices(req, slug)
+
     res.status(200).json({
       message: ' product is updated',
       payload: product,

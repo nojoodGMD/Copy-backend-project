@@ -4,7 +4,7 @@ import { orderModel } from '../models/orderSchema'
 import { createHttpError } from '../errors/createError'
 import { Product } from '../models/productSchema'
 import User from '../models/userSchema'
-import { IItemes } from '../Interfaces/orderInterface'
+import { IItemes } from '../interface/orderInterface'
 
 export const getOrder = async () => {
   const order = await orderModel.find().populate(['userId', 'orderItems'])

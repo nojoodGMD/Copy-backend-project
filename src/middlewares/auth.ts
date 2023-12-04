@@ -44,7 +44,7 @@ export const isAdmin = async (req: customerRequest, res: Response, next: NextFun
   try {
     const user = await User.findById(req.userId)
 
-    if (user?.isAdmin) {
+    if (user && user.isAdmin) {
       next()
     } else {
       throw createHttpError(403, 'Ops! you are not an admin')

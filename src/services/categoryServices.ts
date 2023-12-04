@@ -3,7 +3,7 @@ import slugify from 'slugify'
 
 import { categoryModel } from '../models/categorySchema'
 import { createHttpError } from '../errors/createError'
-import { ICategory } from '../Interfaces/categoryInterface'
+import { ICategory } from '../interface/categoryInterface'
 
 export const getCategory = async (req: Request) => {
   const categories = req.query.name

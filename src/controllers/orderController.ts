@@ -18,6 +18,7 @@ export const getAllOrder = async (req: Request, res: Response, next: NextFunctio
       const error = createHttpError(404, 'There are no orders yet to show.')
       throw error
     }
+
     res.status(200).send({
       message: 'all order are returned',
       payload: order,
@@ -30,6 +31,7 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
   try {
     const { _id } = req.params
     const user = await getSingleOrder(_id)
+    
     res.status(200).json({
       message: 'order is returned successfully!',
       payload: user,
@@ -66,6 +68,7 @@ export const updateSingleOrder = async (req: Request, res: Response, next: NextF
   try {
     const { _id } = req.params
     const order = await updateOrder(_id, req)
+
     res.status(200).send({
       message: 'update single order ',
       payload: order,
@@ -84,6 +87,7 @@ export const deleteSingleOrder = async (req: Request, res: Response, next: NextF
   try {
     const { _id } = req.params
     await deleteOrder(_id)
+    
     res.status(200).json({
       message: 'Delete order',
     })
