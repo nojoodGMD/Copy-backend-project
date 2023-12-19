@@ -1,6 +1,7 @@
 import express, { Application } from 'express'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
+import cors from 'cors'
 
 import usersRouter from './routers/userRouter'
 import authRouter from './routers/authRouters'
@@ -14,11 +15,13 @@ import { connectDB } from './config/db'
 
 const app: Application = express()
 const PORT: number = dev.app.port
+app.use('/public',express.static('public'))
 app.use(myLogger)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(cookieParser())
+app.use(cors())
 
 app.use('/api/users', usersRouter)
 app.use('/api/orders', ordersRouter)
