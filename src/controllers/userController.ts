@@ -108,8 +108,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 
 export const activateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.body.token
-
+    const {token} = req.body
     if (!token) {
       throw createHttpError(404, 'Please provide a valid token')
     }
@@ -125,6 +124,7 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
       const errorMassege = error instanceof TokenExpiredError ? 'token is expired' : 'Invalid Token'
       next(createHttpError(401, errorMassege))
     } else {
+      console.log(error)
       next(error)
     }
   }
