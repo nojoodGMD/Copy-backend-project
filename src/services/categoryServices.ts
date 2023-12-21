@@ -4,6 +4,7 @@ import slugify from 'slugify'
 import { categoryModel } from '../models/categorySchema'
 import { createHttpError } from '../errors/createError'
 import { ICategory } from '../interface/categoryInterface'
+import { updateOrder } from './orderServices'
 
 export const getCategory = async (req: Request) => {
   const categories = req.query.name
@@ -35,14 +36,13 @@ export const getCategoryBySlug = async (slug: string): Promise<ICategory> => {
   return category
 }
 
-export const updateSingleCategory = async (slug: string, req: Request): Promise<ICategory> => {
-  if (req.body.name) {
-    req.body.slug = slugify(req.body.name)
-  }
-  const updateData = req.body
-  const category = await categoryModel.findOneAndUpdate({ slug }, updateData, { new: true })
+export const updateSingleCategory = async (_id: string, req: Request): Promise<ICategory> => {
+  const newSlug = slugify(req.body.name)
+
+  const updateData = { name: req.body.name, slug: newSlug }
+  const category = await categoryModel.findOneAndUpdate({ _id }, updateData, { new: true })
   if (!category) {
-    const error = createHttpError(404, `Category is not found with this slug: ${slug}`)
+    const error = createHttpError(404, `Category is not found with this id: ${_id}`)
     throw error
   }
   return category
