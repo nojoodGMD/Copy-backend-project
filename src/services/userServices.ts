@@ -136,6 +136,14 @@ export const updateUserService = async (id: string, req: Request) => {
   return user
 }
 
+export const changeUserRole = async (id: string) => {
+  const user = await User.findByIdAndUpdate({ _id: id }, { isAdmin: true })
+  if (!user) {
+    const error = createHttpError(404, `user is not found with this id: ${id}`)
+    throw error
+  }
+}
+
 export const banUserById = async (id: string) => {
   const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: true })
   if (!user) {
@@ -143,6 +151,7 @@ export const banUserById = async (id: string) => {
     throw error
   }
 }
+
 export const unbanUserById = async (id: string) => {
   const user = await User.findByIdAndUpdate({ _id: id }, { isBanned: false })
   if (!user) {

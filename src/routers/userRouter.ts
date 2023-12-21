@@ -3,6 +3,7 @@ import { Router } from 'express'
 import {
   activateUser,
   banUser,
+  changeRole,
   deleteUser,
   forgetPassword,
   getAllUsers,
@@ -38,6 +39,7 @@ const router = Router()
 // router.put('/:_id', validateUpdateUser, runValidation, isLoggedIn, updateUser)
 // //DELETE: /users/:id -> delete the user based on the id
 // router.delete('/:_id', isLoggedIn, deleteUser)
+//  PUT: /user/role -> change user role the user
 // //PUT: /user/:ban -> ban the user
 // router.put('/ban/:id', isLoggedIn, isAdmin, banUser)
 // //PUT: /user/:unban -> unban the user
@@ -78,6 +80,8 @@ router.post('/activate', activateUser)
 router.put('/:_id', updateUser)
 //DELETE: /users/:id -> delete the user based on the id
 router.delete('/:_id', deleteUser)
+//PUT: /user/changeRole -> change user role 
+router.put('/changeRole/:id', changeRole)
 //PUT: /user/:ban -> ban the user
 router.put('/ban/:id', banUser)
 //PUT: /user/:unban -> unban the user
