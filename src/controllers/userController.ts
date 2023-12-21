@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 
 import {
   banUserById,
+  changeUserRole,
   createUserService,
   deleteUserSevice,
   forgetPasswordService,
@@ -125,6 +126,23 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
       next(createHttpError(401, errorMassege))
     } else {
       console.log(error)
+      next(error)
+    }
+  }
+}
+
+export const changeRole = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params
+    await changeUserRole(id)
+    res.status(200).json({
+      message: 'User role changed successfully',
+    })
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      const error = createHttpError(400, `Id format is not valid `)
+      next(error)
+    } else {
       next(error)
     }
   }
