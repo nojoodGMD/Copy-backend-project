@@ -28,11 +28,11 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
 
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name } = req.body
+    const {name}  = req.body
     const category = await createSingleCategory(name)
 
     res.status(201).json({
-      message: 'single category created.',
+      message: 'Category created successfully!',
       payload: category,
     })
   } catch (error) {
@@ -68,11 +68,11 @@ export const getSingleCategory = async (req: Request, res: Response, next: NextF
 
 export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { slug } = req.params
-    const category = await updateSingleCategory(slug, req)
+    const { _id } = req.params
+    const category = await updateSingleCategory(_id, req)
 
     res.status(200).json({
-      message: 'Single category updated',
+      message: 'Category updated successfully!',
       payload: category,
     })
   } catch (error) {
