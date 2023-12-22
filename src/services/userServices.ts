@@ -108,6 +108,7 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
     res.status(200).json({
       message: 'check your email adress to activate your account',
+      payload: token
     })
   } catch (error) {
     next(error)
@@ -120,10 +121,9 @@ export const deleteUserSevice = async (id: string) => {
     const error = createHttpError(404, "User with this id doesn't exist")
     throw error
   }
-  console.log(user.image)
-  if (user && user.image) {
-    await deleteImage(user.image)
-  }
+  // if (user && user.image) {
+  //   await deleteImage(user.image)
+  // }
 }
 
 export const updateUserService = async (id: string, req: Request) => {

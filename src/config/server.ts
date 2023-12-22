@@ -11,5 +11,4 @@ export const dev = {
   },
   db: {
     url: process.env.MONGODB_URL,
-  },
-}
+}}
