@@ -38,7 +38,6 @@ export const getCategoryBySlug = async (slug: string): Promise<ICategory> => {
 
 export const updateSingleCategory = async (_id: string, req: Request): Promise<ICategory> => {
   const newSlug = slugify(req.body.name)
-
   const updateData = { name: req.body.name, slug: newSlug }
   const category = await categoryModel.findOneAndUpdate({ _id }, updateData, { new: true })
   if (!category) {

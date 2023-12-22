@@ -5,7 +5,7 @@ import { createHttpError } from '../errors/createError'
 export const deleteImage = async (imagePath: string) => {
   try {
     console.log(imagePath)
-    if(imagePath !== './public/images/users/no-profile-img-default.webp'){
+    if(imagePath !== 'https://res.cloudinary.com/dods1atmt/image/upload/v1703209056/usersProfile/b3uwotyohfxfjcrghbxe.webp'){
       await fs.unlink(imagePath)
     } 
   } catch (error) {

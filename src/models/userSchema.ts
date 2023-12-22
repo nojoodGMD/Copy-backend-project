@@ -40,7 +40,7 @@ const userSchema = new Schema<IUser>(
     },
     image: {
       type: String,
-      default: './public/images/users/no-profile-img-default.webp',
+      default: 'https://res.cloudinary.com/dods1atmt/image/upload/v1703209056/usersProfile/b3uwotyohfxfjcrghbxe.webp',
     },
     phone: {
       type: String,

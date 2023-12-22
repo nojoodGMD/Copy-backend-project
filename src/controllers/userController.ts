@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
+import jwt, { JsonWebTokenError, JwtPayload, TokenExpiredError } from 'jsonwebtoken'
 import mongoose from 'mongoose'
 
 import {
@@ -18,10 +18,18 @@ import { dev } from '../config/server'
 import User from '../models/userSchema'
 import { createHttpError } from '../errors/createError'
 
+import {v2 as cloudinary} from 'cloudinary';
+          
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
+});
+
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 3
+    const limit = Number(req.query.limit) || 100
 
     const result = await getAllUsersService(page, limit, req)
 
@@ -113,9 +121,16 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
     if (!token) {
       throw createHttpError(404, 'Please provide a valid token')
     }
-    const decoded = jwt.verify(token, String(dev.app.jwtUserActivationkey))
-
+    const decoded = jwt.verify(token, String(dev.app.jwtUserActivationkey)) as JwtPayload
+    
+    // Make image public
+    if(decoded.image){
+      //decoded image -> store image in cloudinary -> return image url from cloudinary
+      const response = await cloudinary.uploader.upload(decoded.image,{ folder: "usersProfile" });
+      decoded.image = response.secure_url; //update image url to be the public url from cloudinary
+    }
     await User.create(decoded)
+    
 
     res.status(201).json({
       message: 'user is registered successfully',
