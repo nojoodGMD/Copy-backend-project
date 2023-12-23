@@ -28,7 +28,7 @@ export const handleLoginService = async (req: Request, res: Response) => {
   })
 
   res.cookie('access_token', accessToken, {
-    maxAge: 15 * 60 * 1000, // 15 minutes
+    maxAge: 120 * 60 * 1000, // 2h
     httpOnly: true,
     sameSite: 'none',
     secure:true
