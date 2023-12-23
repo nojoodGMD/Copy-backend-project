@@ -7,7 +7,6 @@ import User from '../models/userSchema'
 import generateToken from '../util/generateToken'
 import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
-import { deleteImage } from '../helper/deleteImageHelper'
 import { dev } from '../config/server'
 
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {

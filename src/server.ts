@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({origin: 'http://localhost:3000',credentials: true}))
 
 app.use('/api/users', usersRouter)
 app.use('/api/orders', ordersRouter)

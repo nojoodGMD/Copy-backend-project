@@ -7,7 +7,7 @@ export const handleLogin = async (req: Request, res: Response, next: NextFunctio
     const user = await handleLoginService(req, res)
 
     res.status(200).send({
-      message: 'login success',
+      message: `Welcome back ${user.name}!`,
       payload: user,
     })
   } catch (error) {
