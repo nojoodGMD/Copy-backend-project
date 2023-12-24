@@ -172,7 +172,7 @@ export const forgetPasswordService = async (email: string) => {
   const emailData = {
     email: email,
     subject: 'Reset your password',
-    html: `<h1>Hello ${user.name}</h1><p>Please reset your password by clicking the following link</p><a href="http://127.0.0.1:3002/uesrs/reset-password/${token}">Reset password`,
+    html: `<h1>Hello ${user.name}</h1><p>Please reset your password by clicking the following link</p><a href="http://localhost:3000/users/reset-password/${token}">Reset password`,
   }
 
   handleSendEmail(emailData)
