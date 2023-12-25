@@ -5345,3 +5345,17 @@ Method: OPTIONS, Path: /api/auth/login, Date: 12/25/2023, Time: 8:43:36 PM
 Method: POST, Path: /api/auth/login, Date: 12/25/2023, Time: 8:43:36 PM
 Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:43:42 PM
 Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:43:42 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:53:20 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:53:21 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:53:21 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:53:35 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:53:38 PM
+Method: POST, Path: /api/users/register, Date: 12/25/2023, Time: 8:54:39 PM
+Method: POST, Path: /api/users/register, Date: 12/25/2023, Time: 8:54:47 PM
+Method: POST, Path: /api/users/register, Date: 12/25/2023, Time: 8:55:03 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:55:27 PM
+Method: POST, Path: /api/auth/logout, Date: 12/25/2023, Time: 8:55:33 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:55:34 PM
+Method: POST, Path: /api/users/register, Date: 12/25/2023, Time: 8:56:20 PM
+Method: GET, Path: /api/categories, Date: 12/25/2023, Time: 9:25:10 PM
+Method: POST, Path: /api/categories, Date: 12/25/2023, Time: 9:26:53 PM

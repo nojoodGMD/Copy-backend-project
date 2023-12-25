@@ -18,14 +18,9 @@ import { dev } from '../config/server'
 import User from '../models/userSchema'
 import { createHttpError } from '../errors/createError'
 
-import {v2 as cloudinary} from 'cloudinary';
 import { uploadToCloudinary } from '../helper/cloudinaryHelper'
           
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY, 
-  api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
-});
+
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {

@@ -1,11 +1,6 @@
-import {v2 as cloudinary} from 'cloudinary';
+
+import { cloudinary } from '../config/coludinary';
 import { createHttpError } from '../errors/createError';
-          
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY, 
-  api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
-});
 
 export const uploadToCloudinary = async (image : string, folderName : string) : Promise<String>=> {
     const response = await cloudinary.uploader.upload(image, {folder:folderName})
