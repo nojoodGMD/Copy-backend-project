@@ -5340,3 +5340,8 @@ Method: OPTIONS, Path: /api/users/activate, Date: 12/25/2023, Time: 8:41:26 PM
 Method: POST, Path: /api/users/activate, Date: 12/25/2023, Time: 8:41:26 PM
 Method: POST, Path: /api/users/activate, Date: 12/25/2023, Time: 8:41:28 PM
 Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:41:29 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:43:33 PM
+Method: OPTIONS, Path: /api/auth/login, Date: 12/25/2023, Time: 8:43:36 PM
+Method: POST, Path: /api/auth/login, Date: 12/25/2023, Time: 8:43:36 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:43:42 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:43:42 PM
