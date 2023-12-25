@@ -5359,3 +5359,6 @@ Method: GET, Path: /api/users, Date: 12/25/2023, Time: 8:55:34 PM
 Method: POST, Path: /api/users/register, Date: 12/25/2023, Time: 8:56:20 PM
 Method: GET, Path: /api/categories, Date: 12/25/2023, Time: 9:25:10 PM
 Method: POST, Path: /api/categories, Date: 12/25/2023, Time: 9:26:53 PM
+Method: GET, Path: /api/users, Date: 12/25/2023, Time: 9:56:20 PM
+Method: POST, Path: /api/users/register, Date: 12/25/2023, Time: 9:56:34 PM
+Method: POST, Path: /api/users/register, Date: 12/25/2023, Time: 9:56:53 PM

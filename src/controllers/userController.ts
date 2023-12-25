@@ -34,7 +34,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
       payload: {
         users: result.users,
         totalPage: result.totalPage,
-        currentPage: result.currentPage,
+        currentPage: result.currentPage, 
       },
     })
   } catch (error) {
