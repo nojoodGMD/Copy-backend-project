@@ -23,12 +23,10 @@ const router = Router()
 // GET: /users -> return all the users
 router.get('/', isLoggedIn, isAdmin, getAllUsers)
 // GET: /users:id -> return the user based on the id
-router.get('/:_id', isLoggedIn, getUserById)
+router.get('/:_id([0-9a-fA-F]{24})', isLoggedIn, getUserById)
 //POST: /users/register -> register a new user
 router.post(
   '/register',
-  validateCreateUser,
-  runValidation,
   uploadUser.single('image'),
   isLoggedOut,
   registerUser
@@ -38,21 +36,21 @@ router.post('/activate', isLoggedOut, activateUser)
 //PUT: /user/:id -> update the user data based on the id
 router.put('/:_id', validateUpdateUser, runValidation, isLoggedIn, updateUser)
 //DELETE: /users/:id -> delete the user based on the id
-router.delete('/:_id', isLoggedIn, deleteUser)
+router.delete('/:_id([0-9a-fA-F]{24})', isLoggedIn, deleteUser)
 //  PUT: /user/role -> change user role the user
-router.put('/changeRole/:id', isLoggedIn, isAdmin, changeRole)
+router.put('/changeRole/:id([0-9a-fA-F]{24})', isLoggedIn, isAdmin, changeRole)
 //PUT: /user/:ban -> ban the user
-router.put('/ban/:id', isLoggedIn, isAdmin, banUser)
+router.put('/ban/:id([0-9a-fA-F]{24})', isLoggedIn, isAdmin, banUser)
 //PUT: /user/:unban -> unban the user
-router.put('/unban/:id', isLoggedIn, isAdmin, unbanUser)
+router.put('/unban/:id([0-9a-fA-F]{24})', isLoggedIn, isAdmin, unbanUser)
 //POST :/user/forget-password-> handle forget password
 router.post('/forget-password', isLoggedOut, forgetPassword)
 //PUT :/user/reset-password-> handle reset password
-router.put('/reset-password', isLoggedOut, resetPassword)
+router.put('/reset-password',isLoggedOut, resetPassword)
 // GET: /users -> return all the users
 router.get('/', isLoggedIn, isAdmin, getAllUsers)
 // GET: /users:id -> return the user based on the id
-router.get('/:_id', isLoggedIn, getUserById)
+router.get('/:_id([0-9a-fA-F]{24})', isLoggedIn, getUserById)
 //POST: /users/register -> register a new user
 router.post(
   '/register',
@@ -62,6 +60,5 @@ router.post(
   isLoggedOut,
   registerUser
 )
-
 
 export default router
