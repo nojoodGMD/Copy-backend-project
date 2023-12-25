@@ -8,6 +8,7 @@ import generateToken from '../util/generateToken'
 import { handleSendEmail } from '../helper/sendEmail'
 import { createHttpError } from '../errors/createError'
 import { dev } from '../config/server'
+import { deleteFromCloudinary, valueWithoutExtension } from '../helper/cloudinaryHelper'
 
 export const getAllUsersService = async (page: number, limit: number, req: Request) => {
   const count = await User.countDocuments()
@@ -107,7 +108,7 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 
     res.status(200).json({
       message: 'check your email adress to activate your account',
-      payload: token
+      payload: token,
     })
   } catch (error) {
     next(error)
@@ -120,9 +121,13 @@ export const deleteUserSevice = async (id: string) => {
     const error = createHttpError(404, "User with this id doesn't exist")
     throw error
   }
-  // if (user && user.image) {
-  //   await deleteImage(user.image)
-  // }
+  if (user && user.image) {
+    const publicID = await valueWithoutExtension(user.image)
+    // avoid deleting the default image
+    if (publicID !== 'b3uwotyohfxfjcrghbxe') {
+      await deleteFromCloudinary(`usersProfile/${publicID}`)
+    }
+  } 
 }
 
 export const updateUserService = async (id: string, req: Request) => {

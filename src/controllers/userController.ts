@@ -19,6 +19,7 @@ import User from '../models/userSchema'
 import { createHttpError } from '../errors/createError'
 
 import {v2 as cloudinary} from 'cloudinary';
+import { uploadToCloudinary } from '../helper/cloudinaryHelper'
           
 cloudinary.config({ 
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -125,9 +126,8 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
     
     // Make image public
     if(decoded.image){
-      //decoded image -> store image in cloudinary -> return image url from cloudinary
-      const response = await cloudinary.uploader.upload(decoded.image,{ folder: "usersProfile" });
-      decoded.image = response.secure_url; //update image url to be the public url from cloudinary
+      const imageULR = uploadToCloudinary(decoded.image ,"usersProfile" )
+      decoded.image = imageULR;
     }
     await User.create(decoded)
     
