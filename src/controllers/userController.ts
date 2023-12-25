@@ -126,7 +126,7 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
     
     // Make image public
     if(decoded.image){
-      const imageULR = await uploadToCloudinary(decoded.image ,"usersProfile" ) 
+      const imageULR = await uploadToCloudinary(decoded.image,"usersProfile" ) 
       decoded.image = imageULR;
     }
     console.log(decoded)
