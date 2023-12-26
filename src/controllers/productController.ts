@@ -8,11 +8,12 @@ import {
   updateProductServices,
 } from '../services/productServices'
 import { createHttpError } from '../errors/createError'
+import { Product } from '../models/productSchema'
 
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 3
+    const limit = Number(req.query.limit) || 10
     const minPrice = Number(req.query.minPrice) || 0
     const maxPrice = Number(req.query.maxPrice) || 2000000
 
@@ -62,8 +63,9 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 export const deleteProductBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const product = await removeProductBySlug(req.params.slug)
+    const restOfProduct = await Product.find()
 
-    res.status(200).send({ message: 'Deleted a single product', payload: product })
+    res.status(200).send({ message: 'Deleted product successfully!', payload: restOfProduct })
   } catch (error) {
     next(error)
   }

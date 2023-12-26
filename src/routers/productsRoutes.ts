@@ -23,7 +23,6 @@ router.post(
   '/',
   createProductValidation,
   runValidation,
-  uploadProduct.single('image'),
   isLoggedIn,
   isAdmin,
   createProduct
