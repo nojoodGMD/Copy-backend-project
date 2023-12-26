@@ -6,6 +6,7 @@ import { createHttpError } from '../errors/createError'
 import { deleteImage } from '../helper/deleteImageHelper'
 import { IProduct } from '../interface/productInterface'
 import { ICategory } from '../interface/categoryInterface'
+import { deleteFromCloudinary, valueWithoutExtension } from '../helper/cloudinaryHelper'
 
 
 export const getAllProductService = async (
@@ -73,14 +74,23 @@ export const removeProductBySlug = async (slug: string): Promise<IProduct> => {
   const product = await Product.findOneAndDelete({
     slug: slug,
   })
-  if (product && product.image) {
-    await deleteImage(product.image)
-  }
+
   if (!product) {
     throw createHttpError(404, 'Product not found with this slug!')
   }
+
+  if(product && product.image){
+    const publicID = await valueWithoutExtension(product.image)
+    // avoid deleting the default image
+    if (publicID !== 'qrli68dpbglpwig15skm') {
+      await deleteFromCloudinary(`productsImg/${publicID}`)
+    }
+  }
+
   return product
 }
+
+
 
 export const createNewProductService = async (
   name: string,
