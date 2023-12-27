@@ -47,9 +47,12 @@ export const getProductBySlug = async (req: Request, res: Response, next: NextFu
 
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('inside createProduct')
     const { name, price, quantity, description, sold, shipping, categoryId } = req.body
+    const imagePath = req.file?.path
+    console.log(req.body)
 
-    const newItem = await createNewProductService(name, price, quantity, description, sold, shipping, categoryId)
+    const newItem = await createNewProductService(name, price, quantity, description, sold, shipping, categoryId, String(imagePath))
 
     res.status(201).send({ 
       message: 'Product is created',
