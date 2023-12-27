@@ -7163,3 +7163,8 @@ Method: POST, Path: /api/auth/logout, Date: 12/27/2023, Time: 5:25:44 PM
 Method: GET, Path: /api/products, Date: 12/27/2023, Time: 5:25:44 PM
 Method: GET, Path: /api/users, Date: 12/27/2023, Time: 5:47:49 PM
 Method: GET, Path: /api/products, Date: 12/27/2023, Time: 7:38:47 PM
+Method: GET, Path: /api/products, Date: 12/27/2023, Time: 10:18:58 PM
+Method: GET, Path: /api, Date: 12/27/2023, Time: 10:26:52 PM
+Method: GET, Path: /api/, Date: 12/27/2023, Time: 10:26:56 PM
+Method: GET, Path: /api/products, Date: 12/27/2023, Time: 10:27:00 PM
+Method: GET, Path: /, Date: 12/27/2023, Time: 10:27:36 PM
