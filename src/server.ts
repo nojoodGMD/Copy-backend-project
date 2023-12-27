@@ -1,4 +1,4 @@
-import express, { Application } from 'express'
+import express, { Application ,Request, Response} from 'express'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import cors from 'cors'
@@ -23,6 +23,7 @@ app.use(morgan('dev'))
 app.use(cookieParser())
 app.use(cors({origin: 'http://localhost:3000',credentials: true}))
 
+app.get('/', (req : Request ,res : Response)=>{res.send('Welcome to TECNO backend!')})
 app.use('/api/users', usersRouter)
 app.use('/api/orders', ordersRouter)
 app.use('/api/products', productsRouter)
