@@ -77,11 +77,11 @@ export const deleteProductBySlug = async (req: Request, res: Response, next: Nex
 export const updateProductBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-    const product = await updateProductServices(req, slug)
+    const products = await updateProductServices(req, slug)
 
     res.status(200).json({
       message: ' product is updated',
-      payload: product,
+      payload: products,
     })
   } catch (error) {
     next(error)
