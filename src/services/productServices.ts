@@ -6,7 +6,7 @@ import { createHttpError } from '../errors/createError'
 import { deleteImage } from '../helper/deleteImageHelper'
 import { IProduct } from '../interface/productInterface'
 import { ICategory } from '../interface/categoryInterface'
-import { deleteFromCloudinary, valueWithoutExtension } from '../helper/cloudinaryHelper'
+import { deleteFromCloudinary, uploadToCloudinary, valueWithoutExtension } from '../helper/cloudinaryHelper'
 
 
 export const getAllProductService = async (
@@ -97,9 +97,10 @@ export const createNewProductService = async (
   price: number,
   quantity: number,
   description: string,
-  sold: boolean,
-  shipping: string,
-  categoryId: ICategory['_id']
+  sold: number,
+  shipping: number,
+  categoryId: string,
+  imagePath : string,
 ) => {
   const productExist = await Product.exists({ name })
 
@@ -107,15 +108,18 @@ export const createNewProductService = async (
     throw createHttpError(409, 'Product already exists with this name')
   }
 
+    const imageULR = await uploadToCloudinary(imagePath,"productsImg" ) 
+
   const newProduct = new Product({
     name,
     slug: slugify(name),
-    price,
-    quantity,
+    price : Number(price),
+    quantity : Number(quantity),
     description,
     sold,
-    shipping,
+    shipping : Number(shipping) || 0,
     categoryId,
+    image: imageULR,
   })
 
   await newProduct.save()
