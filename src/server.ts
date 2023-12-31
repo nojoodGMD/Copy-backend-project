@@ -28,7 +28,7 @@ app.use('/api/products', productsRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/auth', authRouter)
 
-app.use(apiErrorHandler)
+app.use(apiErrorHandler) 
 
 export default app;
 

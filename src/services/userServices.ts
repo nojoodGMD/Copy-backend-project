@@ -116,7 +116,8 @@ export const createUserService = async (req: Request, res: Response, next: NextF
 }
 
 export const deleteUserSevice = async (id: string) => {
-  const user = await User.findByIdAndDelete({ _id: id })
+  const user = await User.findOneAndDelete({ _id: id })
+
   if (!user) {
     const error = createHttpError(404, "User with this id doesn't exist")
     throw error

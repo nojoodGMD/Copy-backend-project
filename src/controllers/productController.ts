@@ -54,9 +54,11 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 
     const newItem = await createNewProductService(name, price, quantity, description, sold, shipping, categoryId, String(imagePath))
 
+    const allProducts = await Product.find()
+
     res.status(201).send({ 
       message: 'Product is created',
-      newItem
+      allProducts
     })
   } catch (error) {
     next(error)
